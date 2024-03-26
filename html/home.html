@@ -2,12 +2,15 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>文大點餐系統</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>文大線上點餐系統</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    <link href="css/style.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+
 </head>
 <body>
     <div>
@@ -15,16 +18,19 @@
         <nav class="navbar navbar-inverse">
             <div class="container-fluid">
               <div class="navbar-header">
-                <a class="navbar-brand" href="#">"文大點餐系統"</a>
+                <a class="navbar-brand">文大線上點餐系統</a>
               </div>
               <ul class="nav navbar-nav">
-                <li class="active"><a href="#">首頁</a></li>
-                <li><a href="#">尋找餐廳</a></li>
-                <li><a href="#">點餐進度</a></li>
+                <li class="active"><a href="home.html">首頁</a></li>
+                <li><a href="search.html">尋找餐廳</a></li>
+                <li><a href="schedule.html">點餐進度</a></li>
+                <li><a href="history.html">歷史訂單</a></li>
+                <li><a href="question.html">常見問題</a></li>
+                <li><a href="contact.html">聯絡資訊</a></li>
               </ul>
               <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><span class="glyphicon glyphicon-user"></span> 店家/顧客註冊</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> 店家/顧客登入</a></li>
+                <li><a href="s.login.html"><span class="glyphicon glyphicon-user"></span> 我是店家</a></li>
+                <li><a href="c.login.html"><span class="glyphicon glyphicon-user"></span> 我是消費者</a></li>
               </ul>
             </div>
           </nav>
@@ -33,9 +39,31 @@
         <div class="container">
             <header class="bgimage">
                 <div class="container">
-                    <h1>文大點餐系統</h1>
+                    <h1 align="center">歡迎使用文大線上點餐系統</h1>
                 </div>
             </header>
+            <div class="clearfix visible-xs visible-lg"></div>
+            <div class="row">
+                <div class="col-lg-3 col-xs-6">
+                     <div class="thumbnail">
+                        <div class="caption">
+                            <h4><span class="glyphicon glyphicon-log-in"></span>登入</h4>
+                            <p><a href="c.login.html" class="btn btn-info">消費者登入</a></p>
+                            <p><a href="s.login.html" class="btn btn-info">店家登入</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix visible-md visible-xs"></div>
+                <div class="col-lg-3 col-xs-6">
+                    <div class="thumbnail">
+                        <div class="caption">
+                            <h4><span class="glyphicon glyphicon-home"></span>註冊</h4>
+                            <p><a href="c.register.html" class="btn btn-info">消費者註冊</a></p>
+                            <p><a href="s.register.html" class="btn btn-info">店家註冊</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- end nested row 3a -->
         </div>
 
         <!--底部-->
