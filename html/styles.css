@@ -1,0 +1,8 @@
+.bgimage{
+
+	background-image:
+		url("../img/pccu.jpg");
+	background-position: center center;
+	background-size: cover;
+	height:250px;
+}
