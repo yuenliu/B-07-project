@@ -1,1 +1,2 @@
-- top nav以home.html為主
+1. top-nav原以home.html為主
+2. 後續將navbar、container、footer分開寫
