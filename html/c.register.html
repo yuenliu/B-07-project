@@ -35,28 +35,23 @@
         </nav>
 
         <!--內容-->
-        <form action="/action_page.php">
+        <form name="form1" method="post" action="c_register.php">
 			<div class="container">
 				<h1>消費者註冊</h1>
 			  	<p>請輸入下列資訊。</p>
 			  	<hr>
-				<label> 姓氏 </label>
-				<input name="firstname" id="firstname" type="text" class="form-control" placeholder="請輸入姓氏">
-				<label > 名字 </label>
-				<input name="name" id="name" type="text" class="form-control" placeholder="請輸入名字">
-			
+				<label> 姓名 </label>
+				<input name="name" id="name" type="text" class="form-control" placeholder="請輸入姓名">
+				<br>
 				<label> 性別 </label>
-				<select name="gender" id="gender" class="custom-select">
+				<select name="gender" id="gender" class="form-control">
 				<option selected>性別</option>
 				<option value="男生">男生</option>
 				<option value="女生">女生</option>
 				</select>
 				<br>
-				<label> 帳號 </label>
-				<input name="account" id="account" type="text" class="form-control" placeholder="請輸入帳號">
-			
 				<label> 來自縣市 </label>
-				<select name="city" id="city" class="custom-select">
+				<select name="city" id="city" class="form-control">
 				<option selected>縣市</option>
 					<option value="基隆縣">基隆縣</option>
 					<option value="台北市">台北市</option>
@@ -81,20 +76,23 @@
 					<option value="連江縣">連江縣</option>
 				</select>	
 				<br>
+				<label class="custom-control-label" > 手機號碼 </label>
+				<input name="phone" id="phone" type="text" class="form-control" placeholder="例如 : 0912345678">
+				<br>
 				<label for="email"><b>Email</b></label>
-				<input type="text" placeholder="輸入您的Email" name="email" id="email" required>
-			
+				<input type="text" placeholder="輸入您的Email" class="form-control" name="email" id="email" required>
+				<br>
 				<label for="psw"><b>密碼</b></label>
-				<input type="password" placeholder="輸入密碼" name="psw" id="psw" required>
-			
+				<input type="password" placeholder="輸入密碼" class="form-control" name="psw" id="psw" required>
+				<br>
 				<label for="psw-repeat"><b>確認密碼</b></label>
-				<input type="password" placeholder="確認密碼" name="psw-repeat" id="psw-repeat" required>
+				<input type="password" placeholder="確認密碼" class="form-control" name="psw-repeat" id="psw-repeat" required>
 				<hr>
 				<p>若您註冊帳號即同意我們的 <a href="#">條款及細則和私隱政策</a>.</p>
 			
 				<button type="submit" class="registerbtn">註冊</button>
 			</div>
-			
+			<br>
 			<div class="container signin">
 			  <p>已經有帳號了？ <a href="c.login.html">登入</a></p>
 			  <p>您是餐廳負責人？ <a href="s.register.html">點我註冊餐廳帳號</a></p>
