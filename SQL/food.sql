@@ -35,6 +35,17 @@ CREATE TABLE `food` (
   `價格` int(4) NOT NULL,
   `熱量` int(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- 已傾印資料表的索引
+--
+
+--
+-- 資料表索引 `food`
+--
+ALTER TABLE `food`
+  ADD PRIMARY KEY (`餐點編號`),
+  ADD KEY `店家編號` (`店家編號`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
