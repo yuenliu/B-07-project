@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS store (
     `店家地址` char(50) NOT NULL,
     `密碼` char(50) NOT NULL,
 
-    PRIMARY KEY ( `E-mail` )
+    PRIMARY KEY ( `E-mail` ),
     UNIQUE KEY `負責人手機號碼` (`負責人手機號碼`)
 
 ) DEFAULT CHARSET = utf8;
