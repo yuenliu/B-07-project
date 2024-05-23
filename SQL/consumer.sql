@@ -29,13 +29,14 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `consumer` (
-  `會員編號` varchar(5) NOT NULL,
+  `會員編號` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'C0000',
   `姓名` varchar(10) NOT NULL,
   `性別` varchar(1) NOT NULL DEFAULT '男',
   `來自縣市` varchar(5) NOT NULL DEFAULT '台北市',
   `E-mail` varchar(50) NOT NULL,
   `密碼` varchar(50) NOT NULL,
-  `手機號碼` varchar(50) NOT NULL
+  `手機號碼` varchar(50) NOT NULL,
+  `未取餐次數` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -46,8 +47,7 @@ CREATE TABLE `consumer` (
 -- 資料表索引 `consumer`
 --
 ALTER TABLE `consumer`
-  ADD PRIMARY KEY (`會員編號`),
-  ADD UNIQUE KEY `密碼` (`密碼`);
+  ADD PRIMARY KEY (`會員編號`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
