@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS `consumer` (
     `姓名` char(4) NOT NULL,
     `性別` char(1) DEFAULT '男',
-    `來自縣市` char(1)  DEFAULT '台北市',
+    `來自縣市` char(4)  DEFAULT '台北市',
     `E-mail` char(50) NOT NULL,
     `密碼` char(50) NOT NULL,
     `手機號碼` char(10) DEFAULT NULL,
