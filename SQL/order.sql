@@ -32,7 +32,7 @@ CREATE TABLE `order` (
   `訂單編號` varchar(6) NOT NULL,
   `會員編號` varchar(5) NOT NULL,
   `店家編號` varchar(5) NOT NULL,
-  `商品編號` varchar(5) NOT NULL,
+  `餐點編號` varchar(6) NOT NULL,
   `建立時間` date NOT NULL,
   `預計取餐時間` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -46,8 +46,9 @@ CREATE TABLE `order` (
 --
 ALTER TABLE `order`
   ADD PRIMARY KEY (`訂單編號`),
-  ADD KEY `consuemr.``會員編號``` (`會員編號`),
-  ADD KEY `store.``店家編號``` (`店家編號`);
+  ADD KEY `會員編號` (`會員編號`),
+  ADD KEY `店家編號` (`店家編號`),
+  ADD KEY `餐點編號` (`餐點編號`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
