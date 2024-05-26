@@ -1,0 +1,168 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="Description" content="中國文化大學113年畢業專題製作，組別B-07">
+    <title>文大線上點餐系統</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="register.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse fixed-top navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+          <div class="navbar-header">
+              <a class="navbar-brand text-white">文大線上點餐系統</a>
+          </div>
+          <div class="collapse navbar-collapse">
+              <ul class="nav navbar-nav">
+                  <li class="nav-item active"><a href="home.html">首頁</a></li>
+                  <li class="nav-item"><a href="search.html">尋找餐廳</a></li>
+                  <li class="nav-item"><a href="contact.html">連絡站長</a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                  <li><a href="notify.html"><span class="glyphicon glyphicon-bell"></span> 通知</a></li>
+              </ul>
+          </div>
+      </div>
+  </nav>
+    <section class="forms-section">
+      <h1 class="section-title">註冊</h1>
+      <div class="forms">
+        <div class="form-wrapper is-active">
+          <button type="button" class="switcher switcher-login">
+            消費者
+            <span class="underline"></span>
+          </button>
+          <form class="form form-login">
+            <fieldset>
+              <legend>Please, enter your email and password for login.</legend>
+              <div class="input-block">
+                <label> 姓氏 </label>
+                <input name="firstname" id="firstname" type="text" class="form-control" placeholder="請輸入姓氏">
+              </div>
+              <div class="input-block">
+                <label > 名字 </label>
+                <input name="name" id="name" type="text" class="form-control" placeholder="請輸入名字">
+              </div>
+                
+              <div class="input-block">
+                <label> 性別 </label>
+                <select name="gender" id="gender" class="custom-select">
+                <option selected>性別</option>
+                <option value="男生">男生</option>
+                <option value="女生">女生</option>
+                </select>
+                <br>
+              </div>
+              <div class="input-block">
+                <label> 帳號 </label>
+                <input name="account" id="account" type="text" class="form-control" placeholder="請輸入帳號">
+              </div>
+              <div class="input-block">
+                <label> 來自縣市 </label>
+                <select name="city" id="city" class="custom-select">
+                <option selected>縣市</option>
+                  <option value="基隆縣">基隆縣</option>
+                  <option value="台北市">台北市</option>
+                  <option value="新北市">新北市</option>
+                  <option value="桃園市">桃園市</option>
+                  <option value="新竹縣">新竹縣</option>
+                  <option value="新竹市">新竹市</option>
+                  <option value="苗栗縣">苗栗縣</option>
+                  <option value="台中市">台中市</option>
+                  <option value="南投縣">南投縣</option>
+                  <option value="雲林縣">雲林縣</option>
+                  <option value="嘉義縣">嘉義縣</option>
+                  <option value="嘉義市">嘉義市</option>
+                  <option value="台南市">台南市</option>
+                  <option value="高雄市">高雄市</option>
+                  <option value="屏東縣">屏東縣</option>
+                  <option value="宜蘭縣">宜蘭縣</option>
+                  <option value="花蓮縣">花蓮縣</option>
+                  <option value="台東縣">台東縣</option>
+                  <option value="澎湖縣">澎湖縣</option>
+                  <option value="金門縣">金門縣</option>
+                  <option value="連江縣">連江縣</option>
+                </select>	
+                <br>
+              </div>
+              <div class="input-block">
+                <label for="email"><b>Email</b></label>
+                <input type="text" placeholder="輸入您的Email" name="email" id="email" required>
+              </div>
+              <div class="input-block">
+                <label for="psw"><b>密碼</b></label>
+                <input type="password" placeholder="輸入密碼" name="psw" id="psw" required>
+              </div>
+              <div class="input-block">
+                <label for="psw-repeat"><b>確認密碼</b></label>
+                <input type="password" placeholder="確認密碼" name="psw-repeat" id="psw-repeat" required>
+              </div>
+            </fieldset>
+            <button type="submit" class="btn-signup">註冊</button>
+          </form>
+        </div>
+        <div class="form-wrapper">
+          <button type="button" class="switcher switcher-signup">
+            店家
+            <span class="underline"></span>
+          </button>
+          <form class="form form-signup">
+            <fieldset>
+              <legend>Please, enter your email, password and password confirmation for sign up.</legend>
+              <div class="input-block">
+                <label class="custom-control-label" > 店家名稱 </label>
+					    <input name="store" id="store" type="text" class="form-control" placeholder="請輸入店家名稱">
+              </div>
+              
+              <div class="input-block">    
+					      <label class="custom-control-label" > 負責人姓名 </label>
+					      <input name="st-name" id="st-name" type="text" class="form-control" placeholder="請輸入負責人姓名">
+              </div>
+              <div class="input-block">
+                <label class="custom-control-label" > 負責人手機號碼 </label>
+                <input name="phone" id="phone" type="text" class="form-control" placeholder="例如 : 0912345678">
+              </div>
+
+              <div class="input-block">
+                <label class="custom-control-label" > 帳號 </label>
+                <input name="account" id="account" type="text" class="form-control" placeholder="請輸入帳號">
+              </div>
+
+              <div class="input-block">
+                <label class="custom-control-label" > E-mail </label>
+                <input name="email" id="email" type="text" class="form-control" placeholder="請輸入E-mail">
+              </div>
+
+              <div class="input-block">
+                <label class="custom-control-label" > 店家電話 </label>
+                <input name="call" id="call" type="text" class="form-control" placeholder="例如 : 02-1234-5678">
+              </div>
+
+              <div class="input-block">
+                <label class="custom-control-label" > 店家地址 </label>
+                <input name="address" id="address" type="text" class="form-control" placeholder="請輸入店家地址">
+              </div>
+          
+              <div class="input-block">
+                <label for="psw"><b>密碼</b></label>
+					      <input type="password" placeholder="輸入密碼" name="psw" id="psw" required>
+              </div>
+					
+              <div class="input-block">
+                <label for="psw-repeat"><b>確認密碼</b></label>
+					      <input type="password" placeholder="確認密碼" name="psw-repeat" id="psw-repeat" required>
+              </div>
+            </fieldset>
+            <button type="submit" class="btn-signup">註冊</button>
+          </form>
+        </div>
+      </div>
+    </section>
+    <script src="register.js"></script>
+  </body>
+</html>
