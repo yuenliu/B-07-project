@@ -29,15 +29,23 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `consumer` (
-  `會員編號` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'C0000',
+  `會員編號` int(4) NOT NULL,
   `姓名` varchar(10) NOT NULL,
   `性別` varchar(1) NOT NULL DEFAULT '男',
-  `來自縣市` varchar(5) NOT NULL DEFAULT '台北市',
   `E-mail` varchar(50) NOT NULL,
+  `電話號碼` varchar(10) NOT NULL,
   `密碼` varchar(50) NOT NULL,
-  `手機號碼` varchar(50) NOT NULL,
   `未取餐次數` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- 傾印資料表的資料 `consumer`
+--
+
+INSERT INTO `consumer` (`會員編號`, `姓名`, `性別`, `E-mail`, `電話號碼`, `密碼`, `未取餐次數`) VALUES
+(1, '名字', '男', 'test@gmail.com', 'asdasdasd', '0912345678', 0),
+(2, 'test', '男', 'nht1497@gmail.com', '0968795335', '$2y$10$nvG2tAZbmkiRwLPOxhhBkep37MXgLHnGCcKHmNeJCYa', 0),
+(3, 'test', '男', 'test2@gmail.com', '123', '$2y$10$vqDJu8kasKVtPzWlosJGPux2ywSpuy.56bkDxsFiguy', 0);
 
 --
 -- 已傾印資料表的索引
@@ -47,7 +55,18 @@ CREATE TABLE `consumer` (
 -- 資料表索引 `consumer`
 --
 ALTER TABLE `consumer`
-  ADD PRIMARY KEY (`會員編號`);
+  ADD PRIMARY KEY (`會員編號`),
+  ADD UNIQUE KEY `E-mail` (`E-mail`);
+
+--
+-- 在傾印的資料表使用自動遞增(AUTO_INCREMENT)
+--
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `consumer`
+--
+ALTER TABLE `consumer`
+  MODIFY `會員編號` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

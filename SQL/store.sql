@@ -46,8 +46,7 @@ CREATE TABLE `store` (
 -- 資料表索引 `store`
 --
 ALTER TABLE `store`
-  ADD PRIMARY KEY (`店家編號`),
-  ADD UNIQUE KEY `負責人手機號碼` (`負責人手機號碼`);
+  ADD PRIMARY KEY (`店家編號`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
