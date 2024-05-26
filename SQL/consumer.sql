@@ -43,9 +43,7 @@ CREATE TABLE `consumer` (
 --
 
 INSERT INTO `consumer` (`會員編號`, `姓名`, `性別`, `E-mail`, `電話號碼`, `密碼`, `未取餐次數`) VALUES
-(1, '名字', '男', 'test@gmail.com', 'asdasdasd', '0912345678', 0),
-(2, 'test', '男', 'nht1497@gmail.com', '0968795335', '$2y$10$nvG2tAZbmkiRwLPOxhhBkep37MXgLHnGCcKHmNeJCYa', 0),
-(3, 'test', '男', 'test2@gmail.com', '123', '$2y$10$vqDJu8kasKVtPzWlosJGPux2ywSpuy.56bkDxsFiguy', 0);
+(1, '測試', '男', 'test@gmail.com', 'asdasdasd', '0912345678', 0);
 
 --
 -- 已傾印資料表的索引
