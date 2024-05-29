@@ -43,7 +43,7 @@ CREATE TABLE `consumer` (
 --
 
 INSERT INTO `consumer` (`會員編號`, `姓名`, `性別`, `E-mail`, `電話號碼`, `密碼`, `未取餐次數`) VALUES
-(1, '測試', '男', 'test@gmail.com', 'asdasdasd', '0912345678', 0);
+(2, '測試', '男', 'test@gmail.com', '0912345678', 'asdasdasd', 0);
 
 --
 -- 已傾印資料表的索引
@@ -64,7 +64,7 @@ ALTER TABLE `consumer`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `consumer`
 --
 ALTER TABLE `consumer`
-  MODIFY `會員編號` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `會員編號` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
