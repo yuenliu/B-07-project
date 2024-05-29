@@ -168,7 +168,7 @@
                             <input type="text" placeholder="輸入您的Email" name="email" id="email" required>
                         </div>
                         <div class="input-block">
-                            <label class="custom-control-label"> 電話 </label>
+                            <label class="custom-control-label"> 手機號碼 </label>
                             <input type="text" placeholder="例如 : 0912345678" name="phoneNumber" id="phoneNumber"
                                 required>
                         </div>
