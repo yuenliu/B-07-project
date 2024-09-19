@@ -34,7 +34,7 @@ CREATE TABLE `store` (
   `負責人姓名` varchar(5) NOT NULL,
   `負責人手機號碼` varchar(10) NOT NULL,
   `E-mail` varchar(50) NOT NULL,
-  `店家電話` varchar(10) NOT NULL,
+  `店家電話` varchar(13) NOT NULL,
   `店家地址` varchar(50) NOT NULL,
   `密碼` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
