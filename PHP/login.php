@@ -20,11 +20,10 @@
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li class="nav-item active"><a href="home.html">首頁</a></li>
-                    <li class="nav-item"><a href="search.html">尋找餐廳</a></li>
-                    <li class="nav-item"><a href="contact.html">聯絡站長</a></li>
+                    <li class="nav-item"><a href="home.html">首頁</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+                    <li><a href="contact.html"> 聯絡管理員</a></li>
                     <li><a href="register.php"><span class="glyphicon glyphicon-log-in"></span> 註冊</a></li>
                 </ul>
             </div>
@@ -43,14 +42,14 @@
             </div>
             <div>
                 <input type="submit" value="登入" />
-                <a href="#">忘記密碼?</a>
-                <a href="#">尚未註冊</a>
+                <a href="forgetpsw.php">忘記密碼?</a>
+                <a href="register.php">尚未註冊</a>
             </div>
-        </form><!-- form -->
-        
+
             <label>
               <input type="checkbox" checked="checked" name="remember"> 記住我
             </label>
+        </form><!-- form -->  
     </section><!-- content -->
 </div>
 
