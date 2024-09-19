@@ -35,6 +35,7 @@
         <h1 class="section-title">註冊</h1>
         <?php
         if (isset($_POST["c_submit"])) {
+            $account = $_POST["account"];
             $name = $_POST["name"];
             $gender = $_POST["gender"];
             $email = $_POST["email"];
@@ -62,7 +63,7 @@
                 array_push($errors, "兩組密碼不一致。");
             }
             require_once "database.php";
-            $sql = "SELECT * FROM `consumer` WHERE `E-mail` = '$email'";
+            $sql = "SELECT * FROM `member` WHERE `account` = '$account'";
             $result = mysqli_query($conn, $sql);
             $rowCount = mysqli_num_rows($result);
             if ($rowCount > 0) {
@@ -74,11 +75,11 @@
                 }
             } else {
 
-                $sql = "INSERT INTO `consumer` (`姓名`, `性別`, `E-mail`, `電話號碼`, `密碼`) VALUES (?, ?, ?, ?, ?)";
+                $sql = "INSERT INTO `member` (`name`, `gender`, `account`, `E-mail`, `phoneNumber`, `password`) VALUES (?, ?, ?, ?, ?, ?)";
                 $stmt = mysqli_stmt_init($conn);
                 $prepareStmt = mysqli_stmt_prepare($stmt, $sql);
                 if ($prepareStmt) {
-                    mysqli_stmt_bind_param($stmt, "sssss", $name, $gender, $email, $phoneNumber, $passwordHash);
+                    mysqli_stmt_bind_param($stmt, "ssssss", $name, $gender, $account, $email, $phoneNumber, $passwordHash);
                     mysqli_stmt_execute($stmt);
                     echo "<div class='alert alert-success'>註冊成功！請到登入頁面登入。.</div>";
                 } else {
@@ -86,12 +87,13 @@
                 }
             }
         } elseif (isset($_POST["s_submit"])) {
+            $account = $_POST["s_account"];
             $storeName = $_POST["storeName"];
-            $st_name = $_POST["st-name"];
-            $phoneNumber = $_POST["phone"];
-            $email = $_POST["email"];
-            $storeNumber = $_POST["call"];
-            $address = $_POST["address"];
+            $st_name = $_POST["st_name"];
+            $phoneNumber = $_POST["s_phoneNumber"];
+            $email = $_POST["s_email"];
+            $storeNumber = $_POST["storePhoneNumber"];
+            $address = $_POST["storeAddress"];
             $password = $_POST["psw"];
             $passwordRepeat = $_POST["psw-repeat"];
 
@@ -100,7 +102,7 @@
             $errors = array();
 
             if (
-                empty($storeName) or empty($st_name) or empty($phoneNumber) or empty($email)
+                empty($account) or empty($storeName) or empty($st_name) or empty($phoneNumber) or empty($email)
                 or empty($storeNumber) or empty($address) or empty($password) or empty($passwordRepeat)
             ) {
                 array_push($errors, "所有表格均需填入資料。");
@@ -127,11 +129,11 @@
                 }
             } else {
 
-                $sql = "INSERT INTO `store` (`店家名稱`, `負責人姓名`, `負責人手機號碼`, `E-mail`, `店家電話`, `店家地址`, `密碼`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                $sql = "INSERT INTO `member` (`storeName`, `name`, `phoneNumber`, `E-mail`, `account`, `storePhoneNumber`, `storeAddress`, `password`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = mysqli_stmt_init($conn);
                 $prepareStmt = mysqli_stmt_prepare($stmt, $sql);
                 if ($prepareStmt) {
-                    mysqli_stmt_bind_param($stmt, "sssssss", $storeName, $st_name, $phoneNumber, $email, $storeNumber, $address, $passwordHash);
+                    mysqli_stmt_bind_param($stmt, "ssssssss", $storeName, $st_name, $phoneNumber, $email, $account, $storeNumber, $address, $passwordHash);
                     mysqli_stmt_execute($stmt);
                     echo "<div class='alert alert-success'>註冊成功！請到登入頁面登入。</div>";
                 } else {
@@ -164,11 +166,15 @@
                             <br>
                         </div>
                         <div class="input-block">
-                            <label for="email"><b>Email(帳號)</b></label>
+                            <label for="account"><b>帳號</b></label>
+                            <input type="text" placeholder="輸入帳號" name="account" id="account" required>
+                        </div>
+                        <div class="input-block">
+                            <label for="email"><b>Email</b></label>
                             <input type="text" placeholder="輸入您的Email" name="email" id="email" required>
                         </div>
                         <div class="input-block">
-                            <label class="custom-control-label"> 手機號碼 </label>
+                            <label class="custom-control-label"> 電話 </label>
                             <input type="text" placeholder="例如 : 0912345678" name="phoneNumber" id="phoneNumber"
                                 required>
                         </div>
@@ -200,28 +206,33 @@
 
                         <div class="input-block">
                             <label class="custom-control-label"> 負責人姓名 </label>
-                            <input name="st-name" id="st-name" type="text" class="form-control" placeholder="請輸入負責人姓名">
+                            <input name="st_name" id="st_name" type="text" class="form-control" placeholder="請輸入負責人姓名">
                         </div>
                         <div class="input-block">
                             <label class="custom-control-label"> 負責人手機號碼 </label>
-                            <input name="phone" id="phone" type="text" class="form-control"
+                            <input name="s_phoneNumber" id="s_phoneNumber" type="text" class="form-control"
                                 placeholder="例如 : 0912345678">
+                        </div>
+                        
+                        <div class="input-block">
+                            <label class="custom-control-label"><b>帳號</b></label>
+                            <input type="text" placeholder="輸入帳號" name="s_account" id="s_account" required>
                         </div>
 
                         <div class="input-block">
                             <label class="custom-control-label"> E-mail </label>
-                            <input name="email" id="email" type="text" class="form-control" placeholder="請輸入E-mail">
+                            <input name="s_email" id="s_email" type="text" class="form-control" placeholder="請輸入E-mail">
                         </div>
 
                         <div class="input-block">
                             <label class="custom-control-label"> 店家電話 </label>
-                            <input name="call" id="call" type="text" class="form-control"
+                            <input name="storePhoneNumber" id="storePhoneNumber" type="text" class="form-control"
                                 placeholder="例如 : (02)1234-5678">
                         </div>
 
                         <div class="input-block">
                             <label class="custom-control-label"> 店家地址 </label>
-                            <input name="address" id="address" type="text" class="form-control" placeholder="請輸入店家地址">
+                            <input name="storeAddress" id="storeAddress" type="text" class="form-control" placeholder="請輸入店家地址">
                         </div>
 
                         <div class="input-block">
