@@ -30,16 +30,15 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `member` (
   `id` int(5) NOT NULL,
-  `account` varchar(20) NOT NULL,
-  `password` varchar(100) NOT NULL,
-  `sex` varchar(1) NOT NULL,
-  `name` varchar(10) NOT NULL,
-  `phoneNumber` varchar(10) NOT NULL,
-  `E-mail` varchar(50) NOT NULL,
-  `storeName` varchar(50) NOT NULL,
-  `storePhoneNumber` varchar(13) NOT NULL,
-  `storeAddress` varchar(50) NOT NULL,
-  `chargeName` varchar(10) NOT NULL
+  `account` varchar(20) NOT NULL COMMENT '帳號',
+  `password` varchar(100) NOT NULL COMMENT '密碼',
+  `sex` varchar(1) NOT NULL COMMENT '顧客性別',
+  `name` varchar(10) NOT NULL COMMENT '(負責人)姓名',
+  `phoneNumber` varchar(10) NOT NULL COMMENT '(負責人)電話號碼',
+  `E-mail` varchar(50) NOT NULL COMMENT '電子信箱',
+  `storeName` varchar(50) NOT NULL COMMENT '店家名稱',
+  `storePhoneNumber` varchar(13) NOT NULL COMMENT'店家電話',
+  `storeAddress` varchar(50) NOT NULL COMMENT '店家地址'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
