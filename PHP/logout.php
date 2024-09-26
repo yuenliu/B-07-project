@@ -1,5 +1,7 @@
 <?php
 session_start();
-session_destroy();
+unset($_COOKIE["account"]); 
+unset($_COOKIE["password"]);
+unset($_SESSION["account"]);
 header("Location: login.php");
 ?>

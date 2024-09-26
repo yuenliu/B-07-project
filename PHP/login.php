@@ -1,4 +1,10 @@
 <html>
+<?php
+session_start();
+if (isset($_SESSION["account"]) || $_SESSION["account"] != "") {
+    header("Location:member_center.php");
+}
+?>
 
 <head>
     <meta charset="utf-8">
@@ -9,7 +15,7 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/login1.css">
 </head>
 
 <body>
@@ -30,28 +36,59 @@
         </div>
     </nav>
 
-<div class="container">
-    <section id="content">
-        <form action="">
-            <h1>登入</h1>
-            <div>
-                <input type="text" placeholder="E-mail" required="" id="username" />
-            </div>
-            <div>
-                <input type="password" placeholder="請輸入密碼" required="" id="password" />
-            </div>
-            <div>
-                <input type="submit" value="登入" />
-                <a href="forgetpsw.php">忘記密碼?</a>
-                <a href="register.php">尚未註冊</a>
-            </div>
+    <div class="container">
+        <section id="content">
+            <form action="login.php" method="post">
+                <?php
+                if (isset($_POST["login"])) {
+                    $account = $_POST["account"];
+                    $password = $_POST["password"];
+                    require_once "database.php";
+                    $sql = "SELECT * FROM `member` WHERE `account` = '$account'";
+                    $result = mysqli_query($conn, $sql);
+                    $user = mysqli_fetch_array($result, MYSQLI_ASSOC);
+                    if ($user) {
+                        if (password_verify($password, $user["password"])) {
+                            session_start();
+                            $_SESSION["account"] = $account;
+                            //使用Cookie記錄登入資料
+                            if (isset($_POST["remember"]) && ($_POST["remember"] == "true")) {
+                                setcookie("account", $_POST["account"], time() + 2 * 60 * 60);
+                                setcookie("password", $_POST["password"], time() + 2 * 60 * 60);
+                            } else {
+                                if (isset($_COOKIE["account"])) {
+                                    setcookie("account", $_POST["account"], time() - 100);
+                                    setcookie("password", $_POST["password"], time() - 100);
+                                }
+                            }
+                            header("Location: member_center.php");
+                        } else {
+                            echo "<div class='alert alert-danger'>密碼錯誤</div>";
+                        }
+                    } else {
+                        echo "<div class='alert alert-danger'>帳號不存在</div>";
+                    }
+                }
+                ?>
+                <h1>登入</h1>
+                <div>
+                    <input type="text" placeholder="帳號" required="" id="account" name="account" />
+                </div>
+                <div>
+                    <input type="password" placeholder="請輸入密碼" required="" id="password" name="password" />
+                </div>
+                <div>
+                    <input type="submit" value="登入" name="login" id="login">
+                    <a href="forgetpsw.php">忘記密碼?</a>
+                    <a href="register.php">尚未註冊</a>
+                </div>
 
-            <label>
-              <input type="checkbox" checked="checked" name="remember"> 記住我
-            </label>
-        </form><!-- form -->  
-    </section><!-- content -->
-</div>
+                <label>
+                    <input type="checkbox" checked="checked" name="remember"> 記住我
+                </label>
+            </form><!-- form -->
+        </section><!-- content -->
+    </div>
 
     </div>
     <!-- javascript -->

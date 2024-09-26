@@ -33,116 +33,116 @@
     </nav>
     <section class="forms-section">
         <h1 class="section-title">註冊</h1>
-        <?php
-        if (isset($_POST["c_submit"])) {
-            $account = $_POST["account"];
-            $name = $_POST["name"];
-            $gender = $_POST["gender"];
-            $email = $_POST["email"];
-            $phoneNumber = $_POST["phoneNumber"];
-            $password = $_POST["password"];
-            $passwordRepeat = $_POST["psw-repeat"];
-
-            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-
-            $errors = array();
-
-            if (
-                empty($name) or empty($gender) or empty($email)
-                or empty($phoneNumber) or empty($password) or empty($passwordRepeat)
-            ) {
-                array_push($errors, "所有表格均需填入資料。");
-            }
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                array_push($errors, "Email格式錯誤。");
-            }
-            if (strlen($password) < 8) {
-                array_push($errors, "密碼長度需大於8。");
-            }
-            if ($password !== $passwordRepeat) {
-                array_push($errors, "兩組密碼不一致。");
-            }
-            require_once "database.php";
-            $sql = "SELECT * FROM `member` WHERE `account` = '$account'";
-            $result = mysqli_query($conn, $sql);
-            $rowCount = mysqli_num_rows($result);
-            if ($rowCount > 0) {
-                array_push($errors, "帳號已存在！");
-            }
-            if (count($errors) > 0) {
-                foreach ($errors as $error) {
-                    echo "<div class='alert alert-danger'>$error</div>";
-                }
-            } else {
-
-                $sql = "INSERT INTO `member` (`name`, `gender`, `account`, `E-mail`, `phoneNumber`, `password`) VALUES (?, ?, ?, ?, ?, ?)";
-                $stmt = mysqli_stmt_init($conn);
-                $prepareStmt = mysqli_stmt_prepare($stmt, $sql);
-                if ($prepareStmt) {
-                    mysqli_stmt_bind_param($stmt, "ssssss", $name, $gender, $account, $email, $phoneNumber, $passwordHash);
-                    mysqli_stmt_execute($stmt);
-                    echo "<div class='alert alert-success'>註冊成功！請到登入頁面登入。.</div>";
-                } else {
-                    die("發生了一些錯誤！請洽管理員。");
-                }
-            }
-        } elseif (isset($_POST["s_submit"])) {
-            $account = $_POST["s_account"];
-            $storeName = $_POST["storeName"];
-            $st_name = $_POST["st_name"];
-            $phoneNumber = $_POST["s_phoneNumber"];
-            $email = $_POST["s_email"];
-            $storeNumber = $_POST["storePhoneNumber"];
-            $address = $_POST["storeAddress"];
-            $password = $_POST["psw"];
-            $passwordRepeat = $_POST["psw-repeat"];
-
-            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-
-            $errors = array();
-
-            if (
-                empty($account) or empty($storeName) or empty($st_name) or empty($phoneNumber) or empty($email)
-                or empty($storeNumber) or empty($address) or empty($password) or empty($passwordRepeat)
-            ) {
-                array_push($errors, "所有表格均需填入資料。");
-            }
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                array_push($errors, "Email格式錯誤。");
-            }
-            if (strlen($password) < 8) {
-                array_push($errors, "密碼長度需大於8。");
-            }
-            if ($password !== $passwordRepeat) {
-                array_push($errors, "兩組密碼不一致。");
-            }
-            require_once "database.php";
-            $sql = "SELECT * FROM `store` WHERE `E-mail` = '$email'";
-            $result = mysqli_query($conn, $sql);
-            $rowCount = mysqli_num_rows($result);
-            if ($rowCount > 0) {
-                array_push($errors, "帳號已存在！");
-            }
-            if (count($errors) > 0) {
-                foreach ($errors as $error) {
-                    echo "<div class='alert alert-danger'>$error</div>";
-                }
-            } else {
-
-                $sql = "INSERT INTO `member` (`storeName`, `name`, `phoneNumber`, `E-mail`, `account`, `storePhoneNumber`, `storeAddress`, `password`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-                $stmt = mysqli_stmt_init($conn);
-                $prepareStmt = mysqli_stmt_prepare($stmt, $sql);
-                if ($prepareStmt) {
-                    mysqli_stmt_bind_param($stmt, "ssssssss", $storeName, $st_name, $phoneNumber, $email, $account, $storeNumber, $address, $passwordHash);
-                    mysqli_stmt_execute($stmt);
-                    echo "<div class='alert alert-success'>註冊成功！請到登入頁面登入。</div>";
-                } else {
-                    die("發生了一些錯誤！請洽管理員。");
-                }
-            }
-        }
-        ?>
         <div class="forms">
+            <?php
+            if (isset($_POST["c_submit"])) {
+                $account = $_POST["account"];
+                $name = $_POST["name"];
+                $gender = $_POST["gender"];
+                $email = $_POST["email"];
+                $phoneNumber = $_POST["phoneNumber"];
+                $password = $_POST["password"];
+                $passwordRepeat = $_POST["psw-repeat"];
+
+                $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+
+                $errors = array();
+
+                if (
+                    empty($name) or empty($gender) or empty($email)
+                    or empty($phoneNumber) or empty($password) or empty($passwordRepeat)
+                ) {
+                    array_push($errors, "所有表格均需填入資料。");
+                }
+                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    array_push($errors, "Email格式錯誤。");
+                }
+                if (strlen($password) < 8) {
+                    array_push($errors, "密碼長度需大於8。");
+                }
+                if ($password !== $passwordRepeat) {
+                    array_push($errors, "兩組密碼不一致。");
+                }
+                require_once "database.php";
+                $sql = "SELECT * FROM `member` WHERE `account` = '$account'";
+                $result = mysqli_query($conn, $sql);
+                $rowCount = mysqli_num_rows($result);
+                if ($rowCount > 0) {
+                    array_push($errors, "帳號已存在！");
+                }
+                if (count($errors) > 0) {
+                    foreach ($errors as $error) {
+                        echo "<div class='alert alert-danger'>$error</div>";
+                    }
+                } else {
+
+                    $sql = "INSERT INTO `member` (`name`, `gender`, `account`, `E-mail`, `phoneNumber`, `password`) VALUES (?, ?, ?, ?, ?, ?)";
+                    $stmt = mysqli_stmt_init($conn);
+                    $prepareStmt = mysqli_stmt_prepare($stmt, $sql);
+                    if ($prepareStmt) {
+                        mysqli_stmt_bind_param($stmt, "ssssss", $name, $gender, $account, $email, $phoneNumber, $passwordHash);
+                        mysqli_stmt_execute($stmt);
+                        echo "<div class='alert alert-success'>註冊成功！請到登入頁面登入。.</div>";
+                    } else {
+                        die("發生了一些錯誤！請洽管理員。");
+                    }
+                }
+            } elseif (isset($_POST["s_submit"])) {
+                $account = $_POST["s_account"];
+                $storeName = $_POST["storeName"];
+                $st_name = $_POST["st_name"];
+                $phoneNumber = $_POST["s_phoneNumber"];
+                $email = $_POST["s_email"];
+                $storeNumber = $_POST["storePhoneNumber"];
+                $address = $_POST["storeAddress"];
+                $password = $_POST["psw"];
+                $passwordRepeat = $_POST["psw-repeat"];
+
+                $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+
+                $errors = array();
+
+                if (
+                    empty($account) or empty($storeName) or empty($st_name) or empty($phoneNumber) or empty($email)
+                    or empty($storeNumber) or empty($address) or empty($password) or empty($passwordRepeat)
+                ) {
+                    array_push($errors, "所有表格均需填入資料。");
+                }
+                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    array_push($errors, "Email格式錯誤。");
+                }
+                if (strlen($password) < 8) {
+                    array_push($errors, "密碼長度需大於8。");
+                }
+                if ($password !== $passwordRepeat) {
+                    array_push($errors, "兩組密碼不一致。");
+                }
+                require_once "database.php";
+                $sql = "SELECT * FROM `store` WHERE `E-mail` = '$email'";
+                $result = mysqli_query($conn, $sql);
+                $rowCount = mysqli_num_rows($result);
+                if ($rowCount > 0) {
+                    array_push($errors, "帳號已存在！");
+                }
+                if (count($errors) > 0) {
+                    foreach ($errors as $error) {
+                        echo "<div class='alert alert-danger'>$error</div>";
+                    }
+                } else {
+
+                    $sql = "INSERT INTO `member` (`storeName`, `name`, `phoneNumber`, `E-mail`, `account`, `storePhoneNumber`, `storeAddress`, `password`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                    $stmt = mysqli_stmt_init($conn);
+                    $prepareStmt = mysqli_stmt_prepare($stmt, $sql);
+                    if ($prepareStmt) {
+                        mysqli_stmt_bind_param($stmt, "ssssssss", $storeName, $st_name, $phoneNumber, $email, $account, $storeNumber, $address, $passwordHash);
+                        mysqli_stmt_execute($stmt);
+                        echo "<div class='alert alert-success'>註冊成功！請到登入頁面登入。</div>";
+                    } else {
+                        die("發生了一些錯誤！請洽管理員。");
+                    }
+                }
+            }
+            ?>
             <div class="form-wrapper is-active">
                 <button type="button" class="switcher switcher-login">
                     消費者
@@ -213,7 +213,7 @@
                             <input name="s_phoneNumber" id="s_phoneNumber" type="text" class="form-control"
                                 placeholder="例如 : 0912345678">
                         </div>
-                        
+
                         <div class="input-block">
                             <label class="custom-control-label"><b>帳號</b></label>
                             <input type="text" placeholder="輸入帳號" name="s_account" id="s_account" required>
@@ -232,7 +232,8 @@
 
                         <div class="input-block">
                             <label class="custom-control-label"> 店家地址 </label>
-                            <input name="storeAddress" id="storeAddress" type="text" class="form-control" placeholder="請輸入店家地址">
+                            <input name="storeAddress" id="storeAddress" type="text" class="form-control"
+                                placeholder="請輸入店家地址">
                         </div>
 
                         <div class="input-block">
