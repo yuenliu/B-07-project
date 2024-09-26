@@ -21,12 +21,11 @@
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li class="nav-item active"><a href="home.html">首頁</a></li>
-                    <li class="nav-item"><a href="search.html">尋找餐廳</a></li>
-                    <li class="nav-item"><a href="contact.html">聯絡站長</a></li>
+                    <li class="nav-item"><a href="home.html">首頁</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="notify.html"><span class="glyphicon glyphicon-log-in"></span> 登入</a></li>
+                    <li class="nav-item"><a href="contact.html">聯絡管理員</a></li>
+                    <li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> 登入</a></li>
                 </ul>
             </div>
         </div>
