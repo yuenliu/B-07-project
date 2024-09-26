@@ -36,6 +36,7 @@
         <div class="forms">
             <?php
             if (isset($_POST["c_submit"])) {
+                $identity = "consumer";
                 $account = $_POST["account"];
                 $name = $_POST["name"];
                 $gender = $_POST["gender"];
@@ -75,12 +76,11 @@
                         echo "<div class='alert alert-danger'>$error</div>";
                     }
                 } else {
-
-                    $sql = "INSERT INTO `member` (`name`, `gender`, `account`, `E-mail`, `phoneNumber`, `password`) VALUES (?, ?, ?, ?, ?, ?)";
+                    $sql = "INSERT INTO `member` (`identity`,`name`, `gender`, `account`, `E-mail`, `phoneNumber`, `password`) VALUES (?,?, ?, ?, ?, ?, ?)";
                     $stmt = mysqli_stmt_init($conn);
                     $prepareStmt = mysqli_stmt_prepare($stmt, $sql);
                     if ($prepareStmt) {
-                        mysqli_stmt_bind_param($stmt, "ssssss", $name, $gender, $account, $email, $phoneNumber, $passwordHash);
+                        mysqli_stmt_bind_param($stmt, "sssssss", $identity,$name, $gender, $account, $email, $phoneNumber, $passwordHash);
                         mysqli_stmt_execute($stmt);
                         echo "<div class='alert alert-success'>註冊成功！請到登入頁面登入。.</div>";
                     } else {
@@ -88,6 +88,7 @@
                     }
                 }
             } elseif (isset($_POST["s_submit"])) {
+                $identity = "store";
                 $account = $_POST["s_account"];
                 $storeName = $_POST["storeName"];
                 $st_name = $_POST["st_name"];
@@ -130,11 +131,11 @@
                     }
                 } else {
 
-                    $sql = "INSERT INTO `member` (`storeName`, `name`, `phoneNumber`, `E-mail`, `account`, `storePhoneNumber`, `storeAddress`, `password`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                    $sql = "INSERT INTO `member` (`identity`,`storeName`, `name`, `phoneNumber`, `E-mail`, `account`, `storePhoneNumber`, `storeAddress`, `password`) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?)";
                     $stmt = mysqli_stmt_init($conn);
                     $prepareStmt = mysqli_stmt_prepare($stmt, $sql);
                     if ($prepareStmt) {
-                        mysqli_stmt_bind_param($stmt, "ssssssss", $storeName, $st_name, $phoneNumber, $email, $account, $storeNumber, $address, $passwordHash);
+                        mysqli_stmt_bind_param($stmt, "sssssssss", $identity, $storeName, $st_name, $phoneNumber, $email, $account, $storeNumber, $address, $passwordHash);
                         mysqli_stmt_execute($stmt);
                         echo "<div class='alert alert-success'>註冊成功！請到登入頁面登入。</div>";
                     } else {
