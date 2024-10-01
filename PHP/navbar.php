@@ -14,15 +14,14 @@
                 $RecMember = mysqli_query($conn, $query_RecMember);
                 $row_Recmember = mysqli_fetch_assoc($RecMember);
                 if ($row_Recmember["identity"] == "consumer") {
-                    echo "<li class='nav-item'><a href='#'>尋找餐廳</a></li>
-                    <li class='nav-item'><a href='#'>我的收藏</a></li>
-                    <li class='nav-item'><a href='#'>訂單管理</a></li>
-                    <li class='nav-item'><a href='#'>歷史訂單</a></li>
-                    <li class='nav-item'><a href='#'>健康管理</a></li>";
+                    echo "<li class='nav-item'><a href='search.php'>尋找餐廳</a></li>
+                    <li class='nav-item'><a href='collect.php'>我的收藏</a></li>
+                    <li class='nav-item'><a href='order.php'>訂單管理</a></li>
+                    <li class='nav-item'><a href='diet.php'>健康管理</a></li>";
                 } else if ($row_Recmember["identity"] == "store") {
-                    echo "<li class='nav-item'><a href='#'>上線狀態</a></li>
-                    <li class='nav-item'><a href='#'>餐點管理</a></li>
-                    <li class='nav-item'><a href='#'>店家管理</a></li>";
+                    echo "<li class='nav-item'><a href='online.php'>上線狀態</a></li>
+                    <li class='nav-item'><a href='meal.php'>餐點管理</a></li>
+                    <li class='nav-item'><a href='store.php'>店家管理</a></li>";
                 } else if ($row_Recmember["identity"] == "root") {
                     echo "<li class='nav-item'><a href='account_manage.php'>管理使用者帳號</a></li>
                     <li class='nav-item'><a href='#'>管理訂單</a></li>
@@ -39,12 +38,24 @@
                 $RecMember = mysqli_query($conn, $query_RecMember);
                 $row_Recmember = mysqli_fetch_assoc($RecMember);
                 if ($row_Recmember["identity"] == "consumer") {
-                    echo "<li><a href='#'> 購物車</a></li>";
+                    echo "<li><a href='shopping_cart.php'> 購物車</a></li>";
                 }
                 ?>
-                <li><a href="contact.html"> 聯絡管理員</a></li>
-                <li><a href="#"> 常見問題</a></li>
-                <li><a href="member_center.php"> 會員中心</a></li>
+                <li><a href="contact.php"> 聯絡管理員</a></li>
+                <li><a href="question.php"> 常見問題</a></li>
+                <?php
+                require_once("database.php");
+                session_start();
+                //查詢登入會員資料
+                $query_RecMember = "SELECT * FROM `member` WHERE `account`='" . $_SESSION["account"] . "'";
+                $RecMember = mysqli_query($conn, $query_RecMember);
+                $row_Recmember = mysqli_fetch_assoc($RecMember);
+                if ($row_Recmember["identity"] == "consumer") {
+                    echo "<li class='nav-item'><a href='member_center.php'>會員中心</a></li>";
+                } else if($row_Recmember["identity"] == "store") {
+                    echo "<li class='nav-item'><a href='store_center.php'>店家中心</a></li>";
+                } 
+                ?>
                 <?php
                 session_start();
                 if (isset($_SESSION["account"])) {

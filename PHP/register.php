@@ -1,3 +1,6 @@
+<?php
+    include("navbar.php");
+?>
 <html>
 
 <head>
@@ -14,22 +17,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-inverse fixed-top navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand text-white">文大線上點餐系統</a>
-            </div>
-            <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="nav-item"><a href="home.html">首頁</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="nav-item"><a href="contact.html">聯絡管理員</a></li>
-                    <li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> 登入</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+
     <section class="forms-section">
         <h1 class="section-title">註冊</h1>
         <div class="forms">
@@ -174,7 +162,7 @@
                             <input type="text" placeholder="輸入您的Email" name="email" id="email" required>
                         </div>
                         <div class="input-block">
-                            <label class="custom-control-label"> 電話 </label>
+                            <label class="custom-control-label"> 手機號碼 </label>
                             <input type="text" placeholder="例如 : 0912345678" name="phoneNumber" id="phoneNumber"
                                 required>
                         </div>
