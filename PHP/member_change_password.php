@@ -41,7 +41,7 @@
         $sql = "SELECT * FROM `member` WHERE `account` = '$account'";
         $result = mysqli_query($conn, $sql);
         $user = mysqli_fetch_array($result, MYSQLI_ASSOC);
-        if (password_verify($password, $user["password"])) {
+        if (password_verify($old_password, $user["password"])) {
             array_push($errors, "舊密碼不一致。");
         }
         if (count($errors) > 0) {
