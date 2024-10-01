@@ -18,6 +18,7 @@
 
     session_start();
     if (isset($_POST["change"])) {
+        $account= $_SESSION["account"];
         $old_password = $_POST["old-password"];
         $password = $_POST["new-password"];
         $passwordRepeat = $_POST["confirm-password"];
