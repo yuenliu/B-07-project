@@ -25,44 +25,43 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `store`
+-- 資料表結構 `contact`
 --
 
-CREATE TABLE `store` (
-  `id` int(5) NOT NULL,
-  `member_id` int(5) NOT NULL,
-  `storeName` varchar(50) NOT NULL,
-  `storeAddress` varchar(100) NOT NULL,
-  `storePhoneNumber` varchar(16) NOT NULL
+CREATE TABLE `contact` (
+  `id` int(8) NOT NULL,
+  `name` varchar(10) NOT NULL COMMENT '姓名',
+  `E-mail` varchar(50) NOT NULL COMMENT '電子信箱',
+  `subject` varchar(100) NOT NULL COMMENT '問題',
+  `reply` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '管理員回應'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- 傾印資料表的資料 `store`
+-- 傾印資料表的資料 `contact`
 --
 
-INSERT INTO `store` (`id`, `member_id`, `storeName`, `storeAddress`, `storePhoneNumber`) VALUES
-(1, 3, '測試1', '測試2', '測試3');
+INSERT INTO `contact` (`id`, `name`, `E-mail`, `subject`, `reply`) VALUES
+(1, '黃俊嘉', '123@gmail.com', '測試1', NULL);
 
 --
 -- 已傾印資料表的索引
 --
 
 --
--- 資料表索引 `store`
+-- 資料表索引 `contact`
 --
-ALTER TABLE `store`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `member_id` (`member_id`);
+ALTER TABLE `contact`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- 在傾印的資料表使用自動遞增(AUTO_INCREMENT)
 --
 
 --
--- 使用資料表自動遞增(AUTO_INCREMENT) `store`
+-- 使用資料表自動遞增(AUTO_INCREMENT) `contact`
 --
-ALTER TABLE `store`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `contact`
+  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
