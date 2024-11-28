@@ -1,6 +1,3 @@
-<?php
-    include("navbar.php");
-?>
 <!DOCTYPE html>
 <html>
 
@@ -15,54 +12,56 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/contact.css">
-    <link rel="stylesheet" href="css/register.css">
 
 </head>
 
 <body>
     <div>
         <?php
-            if (isset($_POST["submit"])) {
-                $name = $_POST["name"];
-                $email = $_POST["email"];
-                $subject = $_POST["subject"];
+        include("navbar.php");
 
-                $errors = array();
+        if (isset($_POST["submit"])) {
+            $name = $_POST["name"];
+            $email = $_POST["email"];
+            $subject = $_POST["subject"];
 
-                if (empty($name) or empty($email) or empty($subject)) {
-                    array_push($errors, "所有表格均需填入資料。");
-                }
-                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    array_push($errors, "Email格式錯誤。");
-                }
+            $errors = array();
 
-                require_once "database.php";
-
-                if (count($errors) > 0) {
-                    foreach ($errors as $error) {
-                        echo "<div class='alert alert-danger'>$error</div>";
-                    }
-                } else {
-                    $sql = "INSERT INTO `contact` (`name`, `E-mail`, `subject`) VALUES (?,?,?)";
-                    $stmt = mysqli_stmt_init($conn);
-                    $prepareStmt = mysqli_stmt_prepare($stmt, $sql);
-                    if ($prepareStmt) {
-                        mysqli_stmt_bind_param($stmt, "sss", $name, $email, $subject);
-                        mysqli_stmt_execute($stmt);
-                        echo "<div class='alert alert-success'>成功送出。</div>";
-                    } else {
-                        die("發生了一些錯誤！請洽管理員。");
-                    }
+            if (empty($name) or empty($email) or empty($subject)) {
+                array_push($errors, "所有表格均需填入資料。");
+            }
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                array_push($errors, "Email格式錯誤。");
             }
 
-        ?>
+            require_once "database.php";
 
+            if (count($errors) > 0) {
+                foreach ($errors as $error) {
+                    echo "<div class='alert alert-danger'>$error</div>";
+                }
+            } else {
+                $sql = "INSERT INTO `contact` (`name`, `E-mail`, `subject`) VALUES (?,?,?)";
+                $stmt = mysqli_stmt_init($conn);
+                $prepareStmt = mysqli_stmt_prepare($stmt, $sql);
+                if ($prepareStmt) {
+                    mysqli_stmt_bind_param($stmt, "sss", $name, $email, $subject);
+                    mysqli_stmt_execute($stmt);
+                    echo "<div class='alert alert-success'>成功送出。</div>";
+                } else {
+                    die("發生了一些錯誤！請洽管理員。");
+                }
+            }
+        }
+        ?>
         <!--內容-->
         <div class="container">
             <h1><span class="glyphicon glyphicon-envelope"></span> 聯絡管理員 ⬇️</h1>
             <div class="clearfix visible-xs visible-lg"></div>
             <div class="row">
                 <div class="col-lg-6 col-xs-8">
+                    <h3>電話 ☎ : 0988961766 / 09</h3>
+                    <h3>地址 ➤ : 中國文化大學大義館7樓 資工系辦公室</h3>
                     <h3>電子信箱 ✉ : B0248059@ulive.pccu.edu.tw&nbsp;&nbsp;劉宇恩
                         <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         B0210353@ulive.pccu.edu.tw&nbsp;&nbsp;黃俊嘉
@@ -70,7 +69,7 @@
                 </div>
                 <div class="clearfix visible-md visible-xs"></div>
             </div><!-- end nested row 3a -->
-            <form action="contact.php" method="POST">
+            <form action="contact.php" method="post">
                 <label for="fname">姓名</label>
                 <input type="text" id="name" name="name" placeholder="輸入姓名">
 
