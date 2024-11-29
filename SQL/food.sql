@@ -29,11 +29,11 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `food` (
-  `餐點編號` varchar(6) NOT NULL,
-  `店家編號` varchar(5) NOT NULL,
-  `餐點名稱` varchar(10) NOT NULL,
-  `價格` int(4) NOT NULL,
-  `熱量` int(4) NOT NULL
+  `food_id` int(6) NOT NULL COMMENT '餐點編號',
+  `store_id` int(5) NOT NULL COMMENT '店家編號',
+  `food_name` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '餐點名稱',
+  `food_price` int(4) NOT NULL COMMENT '價格',
+  `food_calorie` int(4) NOT NULL COMMENT '卡路里'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -44,8 +44,8 @@ CREATE TABLE `food` (
 -- 資料表索引 `food`
 --
 ALTER TABLE `food`
-  ADD PRIMARY KEY (`餐點編號`),
-  ADD KEY `店家編號` (`店家編號`);
+  ADD PRIMARY KEY (`food_id`),
+  ADD KEY `store.``id``` (`store_id`) USING BTREE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
