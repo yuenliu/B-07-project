@@ -26,6 +26,7 @@ include("navbar.php");
             $row_Recmember = mysqli_fetch_assoc($RecMember);
             $query_RecStore = "SELECT * FROM `store` WHERE `member_id`='" . $row_Recmember["id"] . "'";
             $result_RecStore = mysqli_query($conn, $query_RecStore);
+            $row_Recstore = mysqli_fetch_assoc($result_RecStore);
             if (mysqli_num_rows($result_RecStore) == 0) {
                 echo "<div class='panel-body'><p style='color: red;'>初次註冊店家帳號，請先填寫店家資訊。</p></div>";
             }
@@ -69,11 +70,11 @@ include("navbar.php");
             <div class="panel-body">
                 <form action="store_updateform.php" method="POST">
                     <p><strong>店家名稱</strong></p>
-                    <input type="text" name="storeName"><br>
+                    <input <?php if($row_Recstore["storeName"]!=null) echo "value=".$row_Recstore["storeName"]?> type="text" name="storeName"><br>
                     <p><strong>店家地址</strong></p>
-                    <input type="text" name="storeAddress"><br>
+                    <input <?php if($row_Recstore["storeAddress"]!=null)echo "value=".$row_Recstore["storeAddress"]?> type="text" name="storeAddress"><br>
                     <p><strong>店家電話</strong></p>
-                    <input type="text" name="storePhoneNumber"><br>
+                    <input <?php if($row_Recstore["storePhoneNumber"]!=null)echo "value=".$row_Recstore["storePhoneNumber"]?> type="text" name="storePhoneNumber"><br>
                     <input type="submit" name="change" value="確認修改">
                 </form>
             </div>
