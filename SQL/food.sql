@@ -33,6 +33,7 @@ CREATE TABLE `food` (
   `store_id` int(5) NOT NULL COMMENT '店家編號',
   `food_name` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '餐點名稱',
   `food_price` int(4) NOT NULL COMMENT '價格',
+  `food_detail` varchar(500) NOT NULL COMMENT '介紹',
   `food_calorie` int(4) NOT NULL COMMENT '卡路里'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
