@@ -43,8 +43,10 @@
     echo "</table>";
 
     //印店家表
-    $sql_query = "SELECT `id`,`account`,`name`,`phoneNumber`,`E-mail`,`storeName`,`storePhoneNumber`,`storeAddress` FROM `member` where `identity`='store'";
+    $sql_query = "SELECT `id`,`account`,`name`,`phoneNumber`,`E-mail` FROM `member` where `identity`='store'";
     $result = mysqli_query($conn, $sql_query);
+    $store_query = "SELECT `id`,`member_id`,`storeName`,`storeAddress`,`storePhoneNumber` FROM `store`";
+    $storeresult = mysqli_query($conn, $store_query);
 
     echo "<h2 class='col-sm-offset-2'>店家列表</h2>";
     echo "<table border = '1' class='col-sm-offset-2'><tr align='center'>";
@@ -54,21 +56,33 @@
     echo "<th>負責人姓名</th>";
     echo "<th>負責人電話</th>";
     echo "<th>負責人E-mail</th>";
+    echo "<th>店家ID</th>";
     echo "<th>店家名稱</th>";
     echo "<th>店家電話</th>";
     echo "<th>店家地址</th>";
     echo "</tr>";
-
+    $storerow = mysqli_fetch_row($storeresult);
     while ($row = mysqli_fetch_row($result)) {
         echo "<tr>";
         for ($j = 0; $j < mysqli_num_fields($result); $j++) {
             echo "<td>" . $row[$j] . "</td>";
+        } // 在每次迴圈中重新初始化 $storerow 
+        $store_query = "SELECT `id`,`storeName`,`storeAddress`,`storePhoneNumber` FROM `store` WHERE `member_id`='" . $row[0] . "'";
+        $storeresult = mysqli_query($conn, $store_query);
+        $storerow = mysqli_fetch_row($storeresult);
+        if ($storerow) {
+            for ($j = 0; $j < mysqli_num_fields($storeresult); $j++) {
+                echo "<td>" . $storerow[$j] . "</td>";
+            }
+        } else {
+            echo "<td colspan='4'>無店家資料</td>";
         }
         echo "</tr>";
     }
     echo "</table>";
-    
+
     mysqli_close($conn);
     ?>
 </body>
+
 </html>
