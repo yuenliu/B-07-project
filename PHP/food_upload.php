@@ -1,6 +1,9 @@
 <?php
     include("navbar.php");
+    session_start();
+    require_once("login_check.php");
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,11 +14,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script language="javascript">
+        function checkForm(){
+            if(document.food.fileToUpload.value ==""){
+                alert("請上傳餐點圖片");
+                document.food.fileToUpload.focus();
+                return false;
+            }
+            if(document.food.foodname.value ==""){
+                alert("請輸入餐點名稱");
+                document.food.foodname.focus();
+                return false;
+            }
+            if(document.food.foodprice.value ==""){
+                alert("請輸入餐點價格");
+                document.food.foodprice.focus();
+                return false;
+            }
+            if(document.food.fooddetail.value ==""){
+                alert("請輸入餐點介紹");
+                document.food.fooddetail.focus();
+                return false;
+            }
+            if(document.food.foodcalorie.value ==""){
+                alert("請輸入卡路里");
+                document.food.foodcalorie.focus();
+                return false;
+            }
+            return confirm('確定送出嗎?');
+        }
+    </script>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/contact.css">
 </head>
 <body>
+  <div class="panel-body">
   <?php
   require_once("database.php");
 
@@ -31,7 +64,7 @@
     // 檢查圖片檔案是否合法（確保是圖片格式）
     $check = getimagesize($file_tmp);
     if ($check === false) {
-      echo "檔案不是有效的圖片。";
+      echo "<p style='color:red; text-align:center;'>檔案不是有效的圖片。";
     } else {
       // 獲取表單欄位值
       $foodname = mysqli_real_escape_string($conn, $_POST['foodname']);
@@ -41,11 +74,11 @@
 
       // 檢查檔案是否已經存在
       if (file_exists($target_file)) {
-        echo "檔案已經存在。";
+        echo "<p style='color:red;text-align:center;'>檔案已經存在。";
       } else {
         // 檢查檔案大小和檔案類型
         if ($file_size > 4097152 || !in_array($imageFileType, ['png', 'jpg'])) {
-          echo "檔案大小限制為 4MB，檔案類型必須為 PNG 或 JPG。";
+          echo "<p style='color:red;text-align:center;'>檔案大小限制為 4MB，檔案類型必須為 PNG 或 JPG。";
         } else {
           // 若通過所有檢查，移動檔案到目標資料夾
           if (move_uploaded_file($file_tmp, $target_file)) {
@@ -64,28 +97,29 @@
               // 執行查詢
               if (mysqli_stmt_execute($stmt)) {
                 // 成功後跳轉到 upload.php
-                header('Location: food_upload.php');
+                header('Location: food_manage.php');
                 exit;
               } else {
-                echo "資料庫插入失敗！";
+                echo "<p style='color:red;text-align:center;'>資料庫插入失敗！";
               }
 
               // 關閉準備語句
               mysqli_stmt_close($stmt);
             }
           } else {
-            echo "上傳檔案發生錯誤！";
+            echo "<p style='color:red;text-align:center;'>上傳檔案發生錯誤！";
           }
         }
       }
     }
   }
-  ?>
+?>
+</div>
 <div>
   <table width="800" border="0" align="center" cellpadding="4" cellspacing="0">
     <tr valign="top">
       <td width="600">  
-        <form action="upload.php" method="post" enctype="multipart/form-data">
+        <form action="food_upload.php" name="food" method="post" enctype="multipart/form-data" onsubmit="return checkForm();">
           <font size="5">餐點圖片:</font>
           <input type="file" name="fileToUpload" id="fileToUpload"><br>
           <font size="5">餐點名稱:</font>
@@ -98,6 +132,9 @@
           <input type="text" name="foodcalorie" id="foodcalorie"><br>
           <br>
           <input type="submit" value="上傳" name="submit">
+          
+          <input style="font-size: 20px;" type="button" value="回上一頁" name="button" onclick="window.history.back();">
+          
         </form>
       </td>
     </tr>
