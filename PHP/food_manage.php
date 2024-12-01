@@ -1,5 +1,7 @@
 <?php
     include("navbar.php");
+    session_start();
+    require_once("login_check.php");
 ?>
 <!DOCTYPE html>
 <html>
@@ -20,26 +22,29 @@
 </head>
 
 <body>
+    <?php
+        $store_query = "SELECT * FROM `store` WHERE `member_id`='" . $row_Recmember["id"] . "'";
+        $storeresult = mysqli_query($conn, $store_query);
+        $row_Recstore = mysqli_fetch_assoc($storeresult);
+        echo "<p style='font-size: 24px; text-align: center;'>店家名稱：<strong>";
+        echo $row_Recstore["storeName"];
+        echo "</strong></p>";
+    ?>
     <div class="row">
                 <div class="caption" style="display: flex; justify-content: center; align-items: center; width: 100%;">
                     <p style="margin: 0 20px;">
                         <a href="food_upload.php" class="btn btn-success btn-lg">
-                            <b><font size="6">新增餐點</font></b>
+                            <b><font size="6"><新增餐點></font></b>
                         </a>
-                    </p>
-                    <p style="margin: 0 20px;">
-                        <a href="food_upload.php" class="btn btn-info btn-lg">
-                            <b><font size="6">編輯餐點</font></b>
-                        </a>
-                    </p>          
+                    </p>         
                 </div>
     </div><!-- end nested row 3a -->
     <?php
     require_once("database.php");
     $select_db = @mysqli_select_db($conn, "food");
-    $sql_query = "SELECT `foodimage`,`foodname`,`fooddetail`,`foodprice`,`foodcalorie` FROM `food`";
+    $sql_query = "SELECT `foodid`,`foodimage`,`foodname`,`fooddetail`,`foodprice`,`foodcalorie` FROM `food`";
     $result = mysqli_query($conn, $sql_query);
-
+    
     echo "<h2>餐點列表</h2>";
     echo "
     <style>
@@ -60,28 +65,32 @@
         img {
             width: 300px;
             height: 200px;
-            object-fit: cover;
+            object-fit: fill;
         }
     </style>
     ";
 
     echo "<table>";
+    echo "<th>餐點編號</th>";
     echo "<th>餐點圖片(僅供參考)</th>";
     echo "<th>餐點名稱</th>";
     echo "<th>餐點介紹</th>";
     echo "<th>餐點價錢</th>";
-    
     echo "<th>餐點卡路里</th>";
+    echo "<th>編輯/修改</th>";
+    echo "<th>刪除</th>";
     echo "</tr>";
 
     while ($row = mysqli_fetch_row($result)) {
         echo "<tr>";
         for ($j = 0; $j < mysqli_num_fields($result); $j++){
-            if ($j==0)
+            if ($j==1)
             echo"<td><img style='width:300px; height=200px;' src='foodimg/".$row[$j]."'/></td>";
             else
             echo"<td>".$row[$j]."</td>";
         }
+        echo "<td><a href='food_edit.php?foodid=".$row[0]."' class='btn btn-warning'>編輯</a></td>";
+        echo "<td><a href='food_delete.php?foodid=".$row[0]."' class='btn btn-danger' onclick='return confirm(\"確定要刪除這個餐點嗎？\")'>刪除</a></td>";
         echo "</tr>";
     }
     echo "</table>";
