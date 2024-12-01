@@ -14,36 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script language="javascript">
-        function checkForm(){
-            if(document.food.fileToUpload.value ==""){
-                alert("請上傳餐點圖片");
-                document.food.fileToUpload.focus();
-                return false;
-            }
-            if(document.food.foodname.value ==""){
-                alert("請輸入餐點名稱");
-                document.food.foodname.focus();
-                return false;
-            }
-            if(document.food.foodprice.value ==""){
-                alert("請輸入餐點價格");
-                document.food.foodprice.focus();
-                return false;
-            }
-            if(document.food.fooddetail.value ==""){
-                alert("請輸入餐點介紹");
-                document.food.fooddetail.focus();
-                return false;
-            }
-            if(document.food.foodcalorie.value ==""){
-                alert("請輸入卡路里");
-                document.food.foodcalorie.focus();
-                return false;
-            }
-            return confirm('確定送出嗎?');
-        }
-    </script>
+    
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/contact.css">
 </head>
@@ -77,8 +48,8 @@
         echo "<p style='color:red;text-align:center;'>檔案已經存在。";
       } else {
         // 檢查檔案大小和檔案類型
-        if ($file_size > 4097152 || !in_array($imageFileType, ['png', 'jpg'])) {
-          echo "<p style='color:red;text-align:center;'>檔案大小限制為 4MB，檔案類型必須為 PNG 或 JPG。";
+        if ($file_size > 200097152 || !in_array($imageFileType, ['png', 'jpg'])) {
+          echo "<p style='color:red;text-align:center;'>檔案大小限制為 20MB，檔案類型必須為 PNG 或 JPG。";
         } else {
           // 若通過所有檢查，移動檔案到目標資料夾
           if (move_uploaded_file($file_tmp, $target_file)) {
@@ -119,17 +90,17 @@
   <table width="800" border="0" align="center" cellpadding="4" cellspacing="0">
     <tr valign="top">
       <td width="600">  
-        <form action="food_upload.php" name="food" method="post" enctype="multipart/form-data" onsubmit="return checkForm();">
+        <form action="food_upload.php" name="food" method="post" enctype="multipart/form-data">
           <font size="5">餐點圖片:</font>
-          <input type="file" name="fileToUpload" id="fileToUpload"><br>
+          <input type="file" name="fileToUpload" id="fileToUpload" required><br>
           <font size="5">餐點名稱:</font>
-          <input type="text" name="foodname" id="foodname"><br>
+          <input type="text" name="foodname" id="foodname" required><br>
           <font size="5">餐點價格:</font>
-          <input type="text" name="foodprice" id="foodprice"><br>
+          <input type="text" name="foodprice" id="foodprice" required><br>
           <font size="5">餐點介紹:</font>
           <textarea name="fooddetail"></textarea><br>
           <font size="5">餐點卡路里:</font>
-          <input type="text" name="foodcalorie" id="foodcalorie"><br>
+          <input type="text" name="foodcalorie" id="foodcalorie" required><br>
           <br>
           <input type="submit" value="上傳" name="submit">
           
