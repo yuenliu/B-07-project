@@ -55,15 +55,22 @@
           if (move_uploaded_file($file_tmp, $target_file)) {
             // 設定食物圖片檔名
             $foodimage = $file_name;
+            $query_RecMember = "SELECT * FROM `member` WHERE `account`='" . $_SESSION["account"] . "'";
+            $RecMember = mysqli_query($conn, $query_RecMember);
+            $row_Recmember = mysqli_fetch_assoc($RecMember);
+            $store_query = "SELECT * FROM `store` WHERE `member_id`='" . $row_Recmember["id"] . "'";
+            $storeresult = mysqli_query($conn, $store_query);
+            $row_Recstore = mysqli_fetch_assoc($storeresult);
+
 
             // 使用準備語句防止 SQL 注入
-            $sql = "INSERT INTO `food` (`foodname`, `foodimage`, `foodprice`, `fooddetail`, `foodcalorie`) 
-                    VALUES (?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO `food` (`storeid`, `foodname`, `foodimage`, `foodprice`, `fooddetail`, `foodcalorie`) 
+                    VALUES (?, ?, ?, ?, ?, ?)";
 
             // 準備語句
             if ($stmt = mysqli_prepare($conn, $sql)) {
               // 綁定參數
-              mysqli_stmt_bind_param($stmt, "sssss", $foodname, $foodimage, $foodprice, $fooddetail, $foodcalorie);
+              mysqli_stmt_bind_param($stmt, "ssssss", $row_Recstore["id"], $foodname, $foodimage, $foodprice, $fooddetail, $foodcalorie);
               
               // 執行查詢
               if (mysqli_stmt_execute($stmt)) {
