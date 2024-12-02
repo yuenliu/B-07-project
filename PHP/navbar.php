@@ -19,9 +19,9 @@
                     <li class='nav-item'><a href='order.php'>訂單管理</a></li>
                     <li class='nav-item'><a href='diet.php'>健康管理</a></li>";
                 } else if ($row_Recmember["identity"] == "store") {
-                    echo "<li class='nav-item'><a href='online.php'>上線狀態</a></li>
-                    <li class='nav-item'><a href='meal.php'>餐點管理</a></li>
-                    <li class='nav-item'><a href='store.php'>店家管理</a></li>";
+                    echo "
+                    <li class='nav-item'><a href='food_manage.php'>餐點管理</a></li>
+                    <li class='nav-item'><a href='store_manage.php'>店家管理</a></li>";
                 } else if ($row_Recmember["identity"] == "root") {
                     echo "<li class='nav-item'><a href='account_manage.php'>管理使用者帳號</a></li>
                     <li class='nav-item'><a href='#'>管理訂單</a></li>
@@ -38,7 +38,7 @@
                 $RecMember = mysqli_query($conn, $query_RecMember);
                 $row_Recmember = mysqli_fetch_assoc($RecMember);
                 if ($row_Recmember["identity"] == "consumer") {
-                    echo "<li><a href='shopping_cart.php'> 購物車</a></li>";
+                    echo "<li><a href='cart.php' > 購物車</a></li>";
                 }
                 ?>
                 <li><a href="contact.php"> 聯絡管理員</a></li>
@@ -53,7 +53,7 @@
                 if ($row_Recmember["identity"] == "consumer") {
                     echo "<li class='nav-item'><a href='member_center.php'>會員中心</a></li>";
                 } else if($row_Recmember["identity"] == "store") {
-                    echo "<li class='nav-item'><a href='store_center.php'>店家中心</a></li>";
+                    echo "<li class='nav-item'><a href='member_center.php'>會員中心</a></li>";
                 } 
                 ?>
                 <?php
