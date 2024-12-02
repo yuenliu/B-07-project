@@ -12,7 +12,6 @@ include("navbar.php");
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/contact.css">
 </head>
 
 <body>
@@ -21,7 +20,6 @@ include("navbar.php");
             <div class="panel-heading">修改店家資料</div>
             <?php
             session_start();
-            //查詢登入會員資料
             $query_RecMember = "SELECT * FROM `member` WHERE `account`='" . $_SESSION["account"] . "'";
             $RecMember = mysqli_query($conn, $query_RecMember);
             $row_Recmember = mysqli_fetch_assoc($RecMember);
@@ -32,54 +30,69 @@ include("navbar.php");
                 echo "<div class='panel-body'><p style='color: red;'>初次註冊店家帳號，請先填寫店家資訊。</p></div>";
             }
 
-            if (isset($_POST["change"])){
-                $storeName = $_POST["storeName"];
-                $storeAddress = $_POST["storeAddress"];
-                $storePhoneNumber = $_POST["storePhoneNumber"];
+            if (isset($_POST["change"])) {
+                $file_name = $_FILES['storeimg']['name'];
+                $file_tmp = $_FILES['storeimg']['tmp_name'];
+                $file_size = $_FILES['storeimg']['size'];
+                $target_dir = "storeimg/";
+                $target_file = $target_dir . basename($file_name);
+                $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
+                // 檢查圖片檔案是否合法（確保是圖片格式）
+            
+                $check = getimagesize($file_tmp);
                 $errors = array();
 
-                if (
-                    empty($storeName) or empty($storeAddress) or empty($storePhoneNumber)
-                ) {
-                    array_push($errors, "所有表格均需填入資料。");
+                if ($check === false) {
+                    array_push($errors, "檔案不是有效的圖片。");
                 }
-                require_once "database.php";
-                $query_RecMember = "SELECT * FROM `member` WHERE `account`='" . $_SESSION["account"] . "'";
-                $RecMember = mysqli_query($conn, $query_RecMember);
-                $row_Recmember = mysqli_fetch_assoc($RecMember);
-                $sql = "SELECT * FROM `store`";
+                if (file_exists($target_file)) {
+                    array_push($errors, "檔案已經存在。");
+                }
+                if ($file_size > 3 * 1024 * 1024 || !in_array($imageFileType, ['png', 'jpg'])) {
+                    array_push($errors, "檔案大小限制為 3MB，檔案類型必須為 PNG 或 JPG。");
+                }
                 if (count($errors) > 0) {
                     foreach ($errors as $error) {
                         echo "<div class='alert alert-danger'>$error</div>";
                     }
                 } else {
-                    $sql = "INSERT INTO `store` (`member_id`,`storeName`, `storeAddress`, `storePhoneNumber`) VALUES (?,?, ?, ?)";
-                    $stmt = mysqli_stmt_init($conn);
-                    $prepareStmt = mysqli_stmt_prepare($stmt, $sql);
-                    $id = $row_Recmember["id"];
-                    if ($prepareStmt) {
-                        mysqli_stmt_bind_param($stmt, "ssss", $id, $storeName, $storeAddress, $storePhoneNumber);
-                        mysqli_stmt_execute($stmt);
+                    $storeName = $_POST["storeName"];
+                    $storeAddress = $_POST["storeAddress"];
+                    $storePhoneNumber = $_POST["storePhoneNumber"];
+                    $store_image = $file_name;
+                    $id = $row_Recstore["id"];
+                    if (move_uploaded_file($file_tmp, $target_file)) {
+                        $sql_update = "UPDATE `store` SET `storeName` = '$storeName', `storeAddress` = '$storeAddress'
+                        , `storePhoneNumber` = '$storePhoneNumber', `store_image` = '$store_image' WHERE `id` = '$id'";
+
+                        mysqli_query($conn, $sql_update);
                         echo "<div class='alert alert-success'>更改成功！</div>";
-                    } else {
-                        die("發生了一些錯誤！請洽管理員。");
                     }
                 }
             }
             ?>
             <div class="panel-body">
-                <form action="store_updateform.php" method="POST">
+                <form action="store_updateform.php" method="POST" enctype="multipart/form-data">
+                    <p><strong>店家封面</strong></p>
+                    <input type="file" name="storeimg" id="storeimg" required><br>
+                    <?php if ($row_Recstore['store_image']) { ?>
+                        <img src="storeimg/<?php echo $row_Recstore['store_image']; ?>" alt="Current Image" width="300"
+                            height="200">
+                    <?php } ?>
                     <p><strong>店家名稱</strong></p>
-                    <input <?php if($row_Recstore["storeName"]!=null) echo "value=".$row_Recstore["storeName"]?> type="text" name="storeName"><br>
-                    <p><strong>店家地址</strong></p>
-                    <input <?php if($row_Recstore["storeAddress"]!=null)echo "value=".$row_Recstore["storeAddress"]?> type="text" name="storeAddress"><br>
-                    <p><strong>店家電話</strong></p>
-                    <input <?php if($row_Recstore["storePhoneNumber"]!=null)echo "value=".$row_Recstore["storePhoneNumber"]?> type="text" name="storePhoneNumber"><br>
-                    <input type="submit" name="change" value="確認修改">
-                    <input type="submit" value="返回" name="submit" onclick="window.history.back();" style="background-color: #b1b3b2">
-                </form>
+                    <input <?php if ($row_Recstore["storeName"] != null)
+                        echo "value=" . $row_Recstore["storeName"] ?>
+                            type="text" name="storeName" required><br>
+                        <p><strong>店家地址</strong></p>
+                        <input <?php if ($row_Recstore["storeAddress"] != null)
+                        echo "value=" . $row_Recstore["storeAddress"] ?> type="text" name="storeAddress" required><br>
+                        <p><strong>店家電話</strong></p>
+                        <input <?php if ($row_Recstore["storePhoneNumber"] != null)
+                        echo "value=" . $row_Recstore["storePhoneNumber"] ?> type="text" name="storePhoneNumber" required><br>
+                        <input type="submit" name="change" value="確認修改">
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-</body>
+    </body>
