@@ -12,6 +12,7 @@ include("navbar.php");
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/contact.css">
 </head>
 
 <body>
@@ -76,6 +77,7 @@ include("navbar.php");
                     <p><strong>店家電話</strong></p>
                     <input <?php if($row_Recstore["storePhoneNumber"]!=null)echo "value=".$row_Recstore["storePhoneNumber"]?> type="text" name="storePhoneNumber"><br>
                     <input type="submit" name="change" value="確認修改">
+                    <input type="submit" value="返回" name="submit" onclick="window.history.back();" style="background-color: #b1b3b2">
                 </form>
             </div>
         </div>
