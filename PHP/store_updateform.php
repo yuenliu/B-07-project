@@ -63,11 +63,25 @@ include("navbar.php");
                     $store_image = $file_name;
                     $id = $row_Recstore["id"];
                     if (move_uploaded_file($file_tmp, $target_file)) {
-                        $sql_update = "UPDATE `store` SET `storeName` = '$storeName', `storeAddress` = '$storeAddress'
+                        if (mysqli_num_rows($result_RecStore) == 0) {
+                            $sql = "INSERT INTO `store` (`member_id`,`storeName`, `storeAddress`, `storePhoneNumber`,`store_image`) VALUES (?,?, ?, ?,?)";
+                            $stmt = mysqli_stmt_init($conn);
+                            $prepareStmt = mysqli_stmt_prepare($stmt, $sql);
+                            $id = $row_Recmember["id"];
+                            if ($prepareStmt) {
+                                mysqli_stmt_bind_param($stmt, "sssss", $id, $storeName, $storeAddress, $storePhoneNumber,$file_name);
+                                mysqli_stmt_execute($stmt);
+                                echo "<div class='alert alert-success'>更改成功！</div>";
+                            } else {
+                                die("發生了一些錯誤！請洽管理員。");
+                            }
+                        } else {
+                            $sql_update = "UPDATE `store` SET `storeName` = '$storeName', `storeAddress` = '$storeAddress'
                         , `storePhoneNumber` = '$storePhoneNumber', `store_image` = '$store_image' WHERE `id` = '$id'";
 
-                        mysqli_query($conn, $sql_update);
-                        echo "<div class='alert alert-success'>更改成功！</div>";
+                            mysqli_query($conn, $sql_update);
+                            echo "<div class='alert alert-success'>更改成功！</div>";
+                        }
                     }
                 }
             }
