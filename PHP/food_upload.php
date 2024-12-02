@@ -34,9 +34,23 @@ require_once("login_check.php");
             $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
             // 檢查圖片檔案是否合法（確保是圖片格式）
+        
             $check = getimagesize($file_tmp);
+            $errors = array();
+
             if ($check === false) {
-                echo "<p style='color:red; text-align:center;'>檔案不是有效的圖片。";
+                array_push($errors, "檔案不是有效的圖片。");
+            }
+            if (file_exists($target_file)) {
+                array_push($errors, "檔案已經存在。");
+            }
+            if ($file_size > 3 * 1024 * 1024 || !in_array($imageFileType, ['png', 'jpg'])) {
+                array_push($errors, "檔案大小限制為 3MB，檔案類型必須為 PNG 或 JPG。");
+            }
+            if (count($errors) > 0) {
+                foreach ($errors as $error) {
+                    echo "<div class='alert alert-danger'>$error</div>";
+                }
             } else {
                 // 獲取表單欄位值
                 $foodname = $_POST['foodname'];
@@ -51,43 +65,32 @@ require_once("login_check.php");
                 $store_query = "SELECT * FROM `store` WHERE `member_id`='" . $row_Recmember["id"] . "'";
                 $storeresult = mysqli_query($conn, $store_query);
                 $row_Recstore = mysqli_fetch_assoc($storeresult);
-                // 檢查檔案是否已經存在
-                if (file_exists($target_file)) {
-                    echo "<p style='color:red;text-align:center;'>檔案已經存在。";
-                } else {
-                    // 檢查檔案大小和檔案類型
-                    if ($file_size > 200097152 || !in_array($imageFileType, ['png', 'jpg'])) {
-                        echo "<p style='color:red;text-align:center;'>檔案大小限制為 20MB，檔案類型必須為 PNG 或 JPG。";
-                    } else {
-                        // 若通過所有檢查，移動檔案到目標資料夾
-                        if (move_uploaded_file($file_tmp, $target_file)) {
-                            // 設定食物圖片檔名
-                            $foodimage = $file_name;
-                            // 使用準備語句防止 SQL 注入
-                            $sql = "INSERT INTO `food` (`store_id`, `food_name`, `food_image`, `food_price`, `food_detail`, `food_calorie`) 
-                    VALUES (?, ?, ?, ?, ?, ?)";
+                if (move_uploaded_file($file_tmp, $target_file)) {
+                    // 設定食物圖片檔名
+                    $foodimage = $file_name;
+                    // 使用準備語句防止 SQL 注入
+                    $sql = "INSERT INTO `food` (`store_id`, `food_name`, `food_image`, `food_price`, `food_detail`, `food_calorie`) 
+            VALUES (?, ?, ?, ?, ?, ?)";
 
-                            // 準備語句
-                            if ($stmt = mysqli_prepare($conn, $sql)) {
-                                // 綁定參數
-                                mysqli_stmt_bind_param($stmt, "isssss", $row_Recstore["id"], $foodname, $foodimage, $foodprice, $fooddetail, $foodcalorie);
+                    // 準備語句
+                    if ($stmt = mysqli_prepare($conn, $sql)) {
+                        // 綁定參數
+                        mysqli_stmt_bind_param($stmt, "isssss", $row_Recstore["id"], $foodname, $foodimage, $foodprice, $fooddetail, $foodcalorie);
 
-                                // 執行查詢
-                                if (mysqli_stmt_execute($stmt)) {
-                                    // 成功後跳轉到 upload.php
-                                    header('Location: food_manage.php');
-                                    exit;
-                                } else {
-                                    echo "<p style='color:red;text-align:center;'>資料庫插入失敗！";
-                                }
-
-                                // 關閉準備語句
-                                mysqli_stmt_close($stmt);
-                            }
+                        // 執行查詢
+                        if (mysqli_stmt_execute($stmt)) {
+                            // 成功後跳轉到 upload.php
+                            header('Location: food_manage.php');
+                            exit;
                         } else {
-                            echo "<p style='color:red;text-align:center;'>上傳檔案發生錯誤！";
+                            echo "<p style='color:red;text-align:center;'>資料庫插入失敗！";
                         }
+
+                        // 關閉準備語句
+                        mysqli_stmt_close($stmt);
                     }
+                } else {
+                    echo "<p style='color:red;text-align:center;'>上傳檔案發生錯誤！";
                 }
             }
         }
