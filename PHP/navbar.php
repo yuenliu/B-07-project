@@ -14,7 +14,7 @@
                 $RecMember = mysqli_query($conn, $query_RecMember);
                 $row_Recmember = mysqli_fetch_assoc($RecMember);
                 if ($row_Recmember["identity"] == "consumer") {
-                    echo "<li class='nav-item'><a href='res_list.php'>瀏覽餐廳</a></li>
+                    echo "<li class='nav-item'><a href='res_list.php'>尋找餐廳</a></li>
                     <li class='nav-item'><a href='collect.php'>我的收藏</a></li>
                     <li class='nav-item'><a href='order.php'>訂單管理</a></li>
                     <li class='nav-item'><a href='diet.php'>健康管理</a></li>";
@@ -50,9 +50,7 @@
                 $query_RecMember = "SELECT * FROM `member` WHERE `account`='" . $_SESSION["account"] . "'";
                 $RecMember = mysqli_query($conn, $query_RecMember);
                 $row_Recmember = mysqli_fetch_assoc($RecMember);
-                if ($row_Recmember["identity"] == "consumer") {
-                    echo "<li class='nav-item'><a href='member_center.php'>會員中心</a></li>";
-                } else if($row_Recmember["identity"] == "store") {
+                if ($row_Recmember["identity"] == "consumer" || $row_Recmember["identity"] == "store") {
                     echo "<li class='nav-item'><a href='member_center.php'>會員中心</a></li>";
                 } 
                 ?>
