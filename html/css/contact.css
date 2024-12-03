@@ -19,9 +19,22 @@ input[type=text], select, textarea {
     border-radius: 4px;
     cursor: pointer;
   }
+
+  input[type=button] {
+    background-color: #04AA6D;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
   
   /* When moving the mouse over the submit button, add a darker green color */
   input[type=submit]:hover {
+    background-color: #45a049;
+  }
+
+  input[type=button]:hover {
     background-color: #45a049;
   }
   
