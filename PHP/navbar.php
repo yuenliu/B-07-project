@@ -14,7 +14,7 @@
                 $RecMember = mysqli_query($conn, $query_RecMember);
                 $row_Recmember = mysqli_fetch_assoc($RecMember);
                 if ($row_Recmember["identity"] == "consumer") {
-                    echo "<li class='nav-item'><a href='res_list.php'>餐廳列表</a></li>
+                    echo "<li class='nav-item'><a href='res_list.php'>瀏覽餐廳</a></li>
                     <li class='nav-item'><a href='collect.php'>我的收藏</a></li>
                     <li class='nav-item'><a href='order.php'>訂單管理</a></li>
                     <li class='nav-item'><a href='diet.php'>健康管理</a></li>";
