@@ -34,7 +34,7 @@
                 }
                 echo "<a href='res_list.php?storeid=" . $row["id"] . "'>";
                 echo "<div class='col panel panel-default col-md-4'>";
-                echo "<div class='panel-heading'><img src='storeimg/" . $row["store_image"] . "' style='width:300px; height:200px;' /></div>";
+                echo "<div class='panel-heading'><img src='storeimg/" . $row["store_image"] . "' style='width:300px; height:200px;' /></div></a>";
                 echo "<table class='table'>";
                 echo "<th>" . $row["storeName"] . "</th>";
                 echo "<th>";
@@ -44,7 +44,7 @@
                     echo "營業中";
                 }
                 echo "</th>";
-                echo "</table></div></a>";
+                echo "</table></div>";
                 $counter++;
             }
             echo "</div>";
