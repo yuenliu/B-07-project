@@ -29,7 +29,6 @@ include("navbar.php");
             if (mysqli_num_rows($result_RecStore) == 0) {
                 echo "<div class='panel-body'><p style='color: red;'>初次註冊店家帳號，請先填寫店家資訊。</p></div>";
             }
-
             if (isset($_POST["change"])) {
                 $file_name = $_FILES['storeimg']['name'];
                 $file_tmp = $_FILES['storeimg']['tmp_name'];
@@ -37,11 +36,6 @@ include("navbar.php");
                 $target_dir = "storeimg/";
                 $target_file = $target_dir . basename($file_name);
                 $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-
-                // 檢查圖片檔案是否合法（確保是圖片格式）
-            
-                $check = getimagesize($file_tmp);
-                $errors = array();
 
                 if ($check === false) {
                     array_push($errors, "檔案不是有效的圖片。");
@@ -62,26 +56,40 @@ include("navbar.php");
                     $storePhoneNumber = $_POST["storePhoneNumber"];
                     $store_image = $file_name;
                     $id = $row_Recstore["id"];
-                    if (move_uploaded_file($file_tmp, $target_file)) {
-                        if (mysqli_num_rows($result_RecStore) == 0) {
-                            $sql = "INSERT INTO `store` (`member_id`,`storeName`, `storeAddress`, `storePhoneNumber`,`store_image`) VALUES (?,?, ?, ?,?)";
-                            $stmt = mysqli_stmt_init($conn);
-                            $prepareStmt = mysqli_stmt_prepare($stmt, $sql);
-                            $id = $row_Recmember["id"];
-                            if ($prepareStmt) {
-                                mysqli_stmt_bind_param($stmt, "sssss", $id, $storeName, $storeAddress, $storePhoneNumber,$file_name);
-                                mysqli_stmt_execute($stmt);
-                                echo "<div class='alert alert-success'>更改成功！</div>";
-                            } else {
-                                die("發生了一些錯誤！請洽管理員。");
-                            }
-                        } else {
-                            $sql_update = "UPDATE `store` SET `storeName` = '$storeName', `storeAddress` = '$storeAddress'
-                        , `storePhoneNumber` = '$storePhoneNumber', `store_image` = '$store_image' WHERE `id` = '$id'";
 
-                            mysqli_query($conn, $sql_update);
-                            echo "<div class='alert alert-success'>更改成功！</div>";
+                    //先處理基本資料，圖片先管他去死
+                    if (mysqli_num_rows($result_RecStore) == 0) {
+                        $sql = "INSERT INTO `store` (`member_id`,`storeName`, `storeAddress`, `storePhoneNumber`) VALUES (?,?, ?, ?)";
+                        $stmt = mysqli_stmt_init($conn);
+                        $prepareStmt = mysqli_stmt_prepare($stmt, $sql);
+                        $id = $row_Recmember["id"];
+                        if ($prepareStmt) {
+                            mysqli_stmt_bind_param($stmt, "sssss", $id, $storeName, $storeAddress, $storePhoneNumber, $file_name);
+                            mysqli_stmt_execute($stmt);
+                            echo "<div class='alert alert-success'>基本資料更改成功！</div>";
+                        } else {
+                            die("發生了一些錯誤！請洽管理員。");
                         }
+                    } else {
+                        $sql_update = "UPDATE `store` SET `storeName` = '$storeName', `storeAddress` = '$storeAddress'
+                                , `storePhoneNumber` = '$storePhoneNumber' WHERE `id` = '$id'";
+                        mysqli_query($conn, $sql_update);
+                        echo "<div class='alert alert-success'>更改成功！</div>";
+                    }
+
+                    if (move_uploaded_file($file_tmp, $target_file)) {
+                        $sql_update_image = "UPDATE `store` SET `store_image` = ? WHERE `id` = ?";
+                        $stmt_image = mysqli_stmt_init($conn);
+                        $prepareStmt_image = mysqli_stmt_prepare($stmt_image, $sql_update_image);
+                        if ($prepareStmt_image) {
+                            mysqli_stmt_bind_param($stmt_image, "si", $store_image, $id);
+                            mysqli_stmt_execute($stmt_image);
+                            echo "<div class='alert alert-success'>圖片更新成功！</div>";
+                        } else {
+                            echo "預備語句失敗: " . mysqli_stmt_error($stmt_image);
+                        }
+                    } else {
+                        echo "<div class='alert alert-danger'>圖片未更新！</div>";
                     }
                 }
             }
@@ -89,7 +97,8 @@ include("navbar.php");
             <div class="panel-body">
                 <form action="store_updateform.php" method="POST" enctype="multipart/form-data">
                     <p><strong>店家封面</strong></p>
-                    <input type="file" name="storeimg" id="storeimg" required><br>
+                    <input type="file" name="storeimg" id="storeimg" <?php if ($row_Recstore['store_image'])
+                        echo "require" ?>><br>
                     <?php if ($row_Recstore['store_image']) { ?>
                         <img src="storeimg/<?php echo $row_Recstore['store_image']; ?>" alt="Current Image" width="300"
                             height="200">
