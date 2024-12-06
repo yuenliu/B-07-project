@@ -23,7 +23,7 @@ if (isset($_GET['storeid'])) {
         die("發生了一些錯誤！請洽管理員。");
     
     // 跳轉回餐廳頁面
-    header("Location: res_list.php");
-    }
+    
+    }header("Location: collect.php");
 }
 ?>
