@@ -25,23 +25,24 @@ require_once("login_check.php");
         <?php
         session_start();
         if (isset($_GET['storeid'])) {
-        $id = $_GET['storeid'];
-        $sql_query = "SELECT * FROM `store` WHERE `id` = '$id'";
-        $result = mysqli_query($conn, $sql_query);
-        $row = mysqli_fetch_assoc($result);
-        }else{header("Location: res_list.php");
+            $id = $_GET['storeid'];
+            $sql_query = "SELECT * FROM `store` WHERE `id` = '$id'";
+            $result = mysqli_query($conn, $sql_query);
+            $row = mysqli_fetch_assoc($result);
+        } else {
+            header("Location: res_list.php");
         }
 
         $store_query = "SELECT * FROM `store` WHERE `id`='" . $row["id"] . "'";
         $storeresult = mysqli_query($conn, $store_query);
         $row_Recstore = mysqli_fetch_assoc($storeresult);
-        
+
         echo "<table style='width: 80%; text-align: center;'>";
         echo "<tr><td style='font-size: 24px;'>店家名稱：</td>";
-        echo "<td style='font-size: 24px;'>" . $row_Recstore["storeName"] . "</td>";  
+        echo "<td style='font-size: 24px;'>" . $row_Recstore["storeName"] . "</td>";
         echo "<td style='font-size: 24px;'>營業時間：</td>";
         echo "<td style='font-size: 24px;'>" . $row_Recstore["#"] . "</td></tr>";
-        
+
         echo "<tr><td style='font-size: 24px;'>店家電話：</td>";
         echo "<td style='font-size: 24px;'>" . $row_Recstore["storePhoneNumber"] . "</td>";
         echo "<td style='font-size: 24px;'>店家地址：</td>";
@@ -57,7 +58,8 @@ require_once("login_check.php");
             require_once("database.php");
             session_start();
 
-            $sql_query = "SELECT `foodid`,`foodimage`,`foodname`,`foodprice` FROM `food`";
+            $store_id = $row_Recstore["id"];
+            $sql_query = "SELECT `food_id`,`food_image`,`food_name`,`food_price` FROM `food` WHERE `store_id` = $store_id ";
             $result = mysqli_query($conn, $sql_query);
             $num_rows = mysqli_num_rows($result);
             $counter = 0;
@@ -66,13 +68,13 @@ require_once("login_check.php");
                 if ($counter > 0 && $counter % 3 == 0) {
                     echo "</div><div class='rowfood'>";
                 }
-                echo "<a href='menu.php?storeid=" . $row["id"] . "&foodid=" . $rowfood["foodid"] . "'>";
+                echo "<a href='menu.php?storeid=" . $row["id"] . "&foodid=" . $rowfood["food_id"] . "'>";
                 echo "<div class='col panel panel-default col-md-4'>";
-                echo "<div class='panel-heading'><img src='foodimg/" . $rowfood["foodimage"] . "' style='width:300px; height:200px;' /></div>";
+                echo "<div class='panel-heading'><img src='foodimg/" . $rowfood["food_image"] . "' style='width:300px; height:200px;' /></div>";
                 echo "<table class='table'>";
-                echo "<th>餐點名稱 : " . $rowfood["foodname"] . "</th>";
+                echo "<th>餐點名稱 : " . $rowfood["food_name"] . "</th>";
                 echo "<th>";
-                echo "<th>價錢 : " . $rowfood["foodprice"] . "</th>";
+                echo "<th>價錢 : " . $rowfood["food_price"] . "</th>";
                 echo "</th>";
                 echo "</table></div></a>";
                 $counter++;
@@ -81,7 +83,7 @@ require_once("login_check.php");
             ?>
         </div>
     </div>
-    
+
     </div>
     <!-- javascript -->
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
