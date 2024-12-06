@@ -31,10 +31,10 @@
             $vacation_open = $_POST["vacation_open"];
 
             $errors = array();
-            if ((empty($weekdays_open) || empty($weekdays_close)) && empty($weekdays)) {
+            if ((empty($weekdays_open) || empty($weekdays_close)) && $weekdays == false) {
                 array_push($errors, "平日營業未設定。");
             }
-            if ((empty($holiday_open) || empty($holiday_close)) && empty($holidays)) {
+            if ((empty($holiday_open) || empty($holiday_close)) && $holidays == false) {
                 array_push($errors, "假日營業未設定。");
             }
             if (count($errors) > 0) {
