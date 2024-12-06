@@ -14,9 +14,9 @@ if (isset($_GET['storeid'])) {
     $sql_delete = "DELETE FROM `favorites` WHERE `member_id` = '$member_id' AND `store_id` = '$storeid'";
 
     if (mysqli_query($conn, $sql_delete)) {
-        echo "<script>alert('取消收藏成功'); window.location.href='res_list.php';</script>";
+        echo "<script>alert('取消收藏成功'); window.location.href='collect.php';</script>";
     } else {
-        echo "<script>alert('取消收藏失敗'); window.location.href='res_list.php';</script>";
+        echo "<script>alert('取消收藏失敗'); window.location.href='collect.php';</script>";
     } 
 } 
    mysqli_close($conn);
