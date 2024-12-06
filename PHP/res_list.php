@@ -1,3 +1,8 @@
+<?php
+include("navbar.php");
+session_start();
+require_once("login_check.php");
+?>
 <!DOCTYPE html>
 <html>
 
@@ -15,10 +20,6 @@
 
 <body>
     <div>
-        <!--topbar-->
-        <?php
-        include("navbar.php");
-        ?>
         <!--內容-->
         <div class="container">
             <?php
@@ -27,16 +28,29 @@
             $result = mysqli_query($conn, $sql_query);
             $num_rows = mysqli_num_rows($result);
             $counter = 0;
+
+            $query_RecMember = "SELECT * FROM `member` WHERE `account`='" . $_SESSION["account"] . "'";
+            $RecMember = mysqli_query($conn,$query_RecMember);
+            $row_Recmember = mysqli_fetch_assoc($RecMember);
+            $member_id = $row_Recmember["id"];
+
             echo "<div class='row'>";
             while ($row = mysqli_fetch_assoc($result)) {
                 if ($counter > 0 && $counter % 3 == 0) {
                     echo "</div><div class='row'>";
                 }
-                echo "<a href='res_list.php?storeid=" . $row["id"] . "'>";
+                $store_id = $row['id'];
+
+                // 檢查該店家是否已被當前用戶收藏
+                $check_favorite = "SELECT * FROM `favorites` WHERE `member_id` = $member_id AND `store_id` = $store_id";
+                $favorite_result = mysqli_query($conn, $check_favorite);
+                $is_favorite = mysqli_num_rows($favorite_result) > 0 ? true : false;
+
+                echo "<a href='menu.php?storeid=" . $row["id"] . "'>";
                 echo "<div class='col panel panel-default col-md-4'>";
-                echo "<div class='panel-heading'><img src='storeimg/" . $row["store_image"] . "' style='width:300px; height:200px;' /></div></a>";
+                echo "<div class='panel-heading'><img src='storeimg/" . $row["store_image"] . "' style='width:320px; height:200px;' /></div></a>";
                 echo "<table class='table'>";
-                echo "<th>" . $row["storeName"] . "</th>";
+                echo "<th>餐廳名稱 : " . $row["storeName"] . "</th>";
                 echo "<th>";
                 if (!$row["online_state"]) {
                     echo "非營業中";
@@ -44,21 +58,19 @@
                     echo "營業中";
                 }
                 echo "</th>";
+                echo "<th>";
+                if ($is_favorite) {
+                    echo "<th><a href='remove_favorite.php?storeid=" . $store_id . "' class='btn btn-danger'>取消收藏</a></th>";
+                } else {
+                    echo "<th><a href='add_favorite.php?storeid=" . $store_id . "' class='btn btn-success'>加入收藏</a></th>";
+                }    
+                echo "</th>";          
                 echo "</table></div>";
                 $counter++;
             }
             echo "</div>";
             ?>
         </div>
-    </div>
-
-
-    <!--底部-->
-    <footer class="fixed-bottom text-center text-lg-start">
-        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-            中國文化大學畢業專題製作B-07組
-        </div>
-    </footer>
     </div>
     <!-- javascript -->
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
