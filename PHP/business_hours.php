@@ -88,6 +88,15 @@
 
             }
         }
+        $query_RecMember = "SELECT * FROM `member` WHERE `account`='" . $_SESSION["account"] . "'";
+        $RecMember = mysqli_query($conn, $query_RecMember);
+        $row_Recmember = mysqli_fetch_assoc($RecMember);
+        $store_query = "SELECT * FROM `store` WHERE `member_id`='" . $row_Recmember["id"] . "'";
+        $storeresult = mysqli_query($conn, $store_query);
+        $row_Recstore = mysqli_fetch_assoc($storeresult);
+        $query_business = "SELECT * FROM `business_hours` WHERE `store_id` = '" . $row_Recstore["id"] . "'";
+        $RecBusiness = mysqli_query($conn, $query_business);
+        $row_RecBusiness = mysqli_fetch_assoc($RecBusiness);
         ?>
         <!--內容-->
         <div class="container">
@@ -102,66 +111,78 @@
                                 <form action="business_hours.php" method="POST">
                                     <tr>
                                         <th>平日</th>
-                                        <th><label>開始營業</label><input type="time" name="weekdays_open" value="05:00"></th>
-                                        <th><label>結束營業</label><input type="time" name="weekdays_close" value="14:00"></th>
-                                        <th><label> 休假 </label>
-                                            <select name="weekdays" id="weekdays">
-                                                <option selected>請選擇</option>
-                                                <option value="1">是</option>
-                                                <option value="0">否</option>
-                                            </select>
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th>假日</th>
-                                        <th><label>開始營業</label><input type="time" name="holiday_open" value="00:00">
-                                        </th>
-                                        <th><label>結束營業</label><input type="time" name="holiday_close" value="23:59">
-                                        </th>
-                                        <th><label> 休假 </label>
-                                            <select name="holidays" id="holidays">
-                                                <option selected>請選擇</option>
-                                                <option value="1">是</option>
-                                                <option value="0">否</option>
-                                            </select>
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th><label for="special_time">特殊</label></th>
-                                        <th><input type="text" name="special_time"></th>
-                                    </tr>
-                                    <tr>
-                                        <th><label> 寒暑假不營業 </label>
-                                            <select name="vacation_open" id="vacation_open">
-                                                <option selected>請選擇</option>
-                                                <option value="1">是</option>
-                                                <option value="0">否</option>
-                                            </select>
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th><input type="submit" name="submit"></th>
-                                    </tr>
-                                </form>
-                            </tbody>
-                        </table>
+                                        <th><label>開始營業</label><input type="time" name="weekdays_open" value=<?php if ($row_RecBusiness["weekdays_open"])
+                                            echo $row_RecBusiness["weekdays_open"];
+                                        else
+                                            echo "07:00" ?>></th>
+                                            <th><label>結束營業</label><input type="time" name="weekdays_close" value=<?php if ($row_RecBusiness["weekdays_close"])
+                                            echo $row_RecBusiness["weekdays_close"];
+                                        else
+                                            echo "17:00" ?>></th>
+                                            <th><label> 休假 </label>
+                                                <select name="weekdays" id="weekdays">
+                                                    <option selected>請選擇</option>
+                                                    <option value="1" <?php if($row_RecBusiness["weekdays"]==true) echo "selected"?>>是</option>
+                                                    <option value="0" <?php if($row_RecBusiness["weekdays"]==false) echo "selected"?>>否</option>
+                                                </select>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>假日</th>
+                                            <th><label>開始營業</label><input type="time" name="holiday_open" value=<?php if ($row_RecBusiness["holiday_open"])
+                                            echo $row_RecBusiness["holiday_open"];
+                                        else
+                                            echo "07:00" ?>>
+                                            </th>
+                                            <th><label>結束營業</label><input type="time" name="holiday_close" value=<?php if ($row_RecBusiness["holiday_close"])
+                                            echo $row_RecBusiness["holiday_close"];
+                                        else
+                                            echo "07:00" ?>>
+                                            </th>
+                                            <th><label> 休假 </label>
+                                                <select name="holidays" id="holidays">
+                                                    <option selected>請選擇</option>
+                                                    <option value="1" <?php if($row_RecBusiness["holidays"]==true) echo "selected"?>>是</option>
+                                                    <option value="0" <?php if($row_RecBusiness["holidays"]==false) echo "selected"?>>否</option>
+                                                </select>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th><label for="special_time">特殊</label></th>
+                                            <th><input type="text" name="special_time"></th>
+                                        </tr>
+                                        <tr>
+                                            <th><label> 寒暑假不營業 </label>
+                                                <select name="vacation_open" id="vacation_open">
+                                                    <option selected>請選擇</option>
+                                                    <option value="1" <?php if($row_RecBusiness["vacation_open"]==true) echo "selected"?>>是</option>
+                                                    <option value="0" <?php if($row_RecBusiness["vacation_open"]==false) echo "selected"?>>否</option>
+                                                </select>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th><input type="submit" name="submit"></th>
+                                        </tr>
+                                    </form>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
-    <!--底部-->
-    <footer class="fixed-bottom text-center text-lg-start">
-        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-            中國文化大學畢業專題製作B-07組
+        <!--底部-->
+        <footer class="fixed-bottom text-center text-lg-start">
+            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+                中國文化大學畢業專題製作B-07組
+            </div>
+        </footer>
         </div>
-    </footer>
-    </div>
-    <!-- javascript -->
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-</body>
+        <!-- javascript -->
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+    </body>
 
-</html>
+    </html>
