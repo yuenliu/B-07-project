@@ -34,7 +34,6 @@ require_once("login_check.php");
                     $query_RecMember = "SELECT * FROM `member` WHERE `account`='" . $_SESSION["account"] . "'";
                     $RecMember = mysqli_query($conn, $query_RecMember);
                     $row_Recmember = mysqli_fetch_assoc($RecMember);
-
                     if (
                         $row_Recmember["identity"] == "consumer" ||
                         $row_Recmember["identity"] == "root"
@@ -67,6 +66,7 @@ require_once("login_check.php");
                     }
                     echo "<p><a href='store_qrcode.php'> 店家QRcode </a></p>";
                     echo "<p><a href='food_manage.php'> 餐點管理 </a></p>";
+                    echo "<p><a href='business_hours.php'> 營業時間設定 </a></p>";
                     ?>
                 </p>
             </div>
