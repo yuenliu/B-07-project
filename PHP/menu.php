@@ -1,9 +1,3 @@
-<?php
-include("navbar.php");
-session_start();
-require_once("login_check.php");
-?>
-
 <!DOCTYPE html>
 <html>
 
@@ -17,47 +11,56 @@ require_once("login_check.php");
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/food_manage.css">
 </head>
 
 <body>
     <div>
-        <?php
-        session_start();
-        if (isset($_GET['storeid'])) {
-            $id = $_GET['storeid'];
-            $sql_query = "SELECT * FROM `store` WHERE `id` = '$id'";
-            $result = mysqli_query($conn, $sql_query);
-            $row = mysqli_fetch_assoc($result);
-        } else {
-            header("Location: res_list.php");
-        }
-
-        $store_query = "SELECT * FROM `store` WHERE `id`='" . $row["id"] . "'";
-        $storeresult = mysqli_query($conn, $store_query);
-        $row_Recstore = mysqli_fetch_assoc($storeresult);
-
-        echo "<table style='width: 80%; text-align: center;'>";
-        echo "<tr><td style='font-size: 24px;'>店家名稱：</td>";
-        echo "<td style='font-size: 24px;'>" . $row_Recstore["storeName"] . "</td>";
-        echo "<td style='font-size: 24px;'>營業時間：</td>";
-        echo "<td style='font-size: 24px;'>" . $row_Recstore["#"] . "</td></tr>";
-
-        echo "<tr><td style='font-size: 24px;'>店家電話：</td>";
-        echo "<td style='font-size: 24px;'>" . $row_Recstore["storePhoneNumber"] . "</td>";
-        echo "<td style='font-size: 24px;'>店家地址：</td>";
-        echo "<td style='font-size: 24px;'>" . $row_Recstore["storeAddress"] . "</td></tr>";
-        echo "</table>";
-        ?>
-        <hr>
-        <h2>菜單</h2>
-        <hr>
-        <!--內容-->
+        <?php include("navbar.php"); ?>
         <div class="container">
             <?php
-            require_once("database.php");
             session_start();
+            if (isset($_GET['storeid'])) {
+                $id = $_GET['storeid'];
+                $sql_query = "SELECT * FROM `store` WHERE `id` = '$id'";
+                $result = mysqli_query($conn, $sql_query);
+                $row = mysqli_fetch_assoc($result);
+            } else {
+                header("Location: res_list.php");
+            }
 
+            $store_query = "SELECT * FROM `store` WHERE `id`='" . $row["id"] . "'";
+            $storeresult = mysqli_query($conn, $store_query);
+            $row_Recstore = mysqli_fetch_assoc($storeresult);
+
+            echo "<h1><b>" . $row_Recstore["storeName"] . "</b></h1>";
+            echo "<h3>店家電話：" . $row_Recstore["storePhoneNumber"] . "</h3>";
+            echo "<h3>店家地址：" . $row_Recstore["storeAddress"] . "</h3>";
+            echo "<h3>營業時間：</h3>";
+
+            $business_sql = "SELECT * FROM `business_hours` WHERE `store_id`='" . $row["id"] . "'";
+            $storeresult = mysqli_query($conn, $business_sql);
+            $row_business = mysqli_fetch_assoc($storeresult);
+            if ($row_business["weekdays"] == true) {
+                $weekdays = "休假";
+            } else {
+                $weekdays = $row_business["weekdays_open"] . "~" . $row_business["weekdays_close"];
+            }
+            if ($row_business["holidays"] == true) {
+                $holidays = "休假";
+            } else {
+                $holidays = $row_business["holiday_open"] . "~" . $row_business["holiday_close"];
+            }
+            echo "<h4>平日：" . $weekdays . "</h4>";
+            echo "<h4>假日：" . $holidays . "</h4>";
+            if ($row_business["special_time"] !== null) {
+                echo "<h4>其他：" . $row_business["special_time"] . "<h4>";
+            }
+            if ($row_business["vacation_open"] == true) {
+                echo "<h4 style='color: red;'>寒暑假不營業<h4>";
+            }
+            ?>
+            <hr>
+            <?php
             $store_id = $row_Recstore["id"];
             $sql_query = "SELECT `food_id`,`food_image`,`food_name`,`food_price` FROM `food` WHERE `store_id` = $store_id ";
             $result = mysqli_query($conn, $sql_query);
@@ -84,6 +87,13 @@ require_once("login_check.php");
         </div>
     </div>
 
+
+    <!--底部-->
+    <footer class="fixed-bottom text-center text-lg-start">
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+            中國文化大學畢業專題製作B-07組
+        </div>
+    </footer>
     </div>
     <!-- javascript -->
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
