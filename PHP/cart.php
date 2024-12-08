@@ -55,22 +55,23 @@
                                 $store = mysqli_query($conn,$query_store);
                                 $Rec_store = mysqli_fetch_assoc($store);
 
+                                echo "<tr>";
                                 echo "<td>".$Rec_food["food_name"]."</td>";
                                 echo "<td>".$Rec_store["storeName"]."</td>";
                                 echo "<td>".$Rec_food["food_price"]."</td>";
                                 echo "<td>".$rowCart["quantity"]."</td>";
                                 echo "<td><input type='text' value=".$rowCart["remark"]."></td>";
-                                echo "<td><a href='cart_delete.php' class='btn btn-danger'>刪除</a></td>";
+                                echo "<td><a href='cart_delete.php?food_id=".$Rec_food["food_id"]."' class='btn btn-danger'>刪除</a></td>";
 
-                                echo "</tr></table><hr>";
+                                echo "</tr>";
                                 $total_price += $Rec_food["food_price"] * $rowCart["quantity"];
                             }
-                            echo "</tr></table>";
+                            echo "</table><hr>";
                             echo "<p align='right'>總金額：".$total_price."$</p>";
                             echo "<hr>
                         <p align='right'>
-                            <a herf='cart_delete.php?' class='btn btn-danger'>清空購物車</a>
-                            <a herf='cart_submit.php' class='btn btn-primary'>提交訂單</a>
+                            <a href='cart_delete.php?food_id=all' class='btn btn-danger'>清空購物車</a>
+                            <a href='cart_submit.php' class='btn btn-primary'>提交訂單</a>
                         </p>";
                         }
                         ?>
