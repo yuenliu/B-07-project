@@ -29,7 +29,7 @@ while ($rowCart = mysqli_fetch_assoc($RecCart)) {
     if ($prepareStmt) {
         mysqli_stmt_bind_param($stmt, "sssssss", $member_id, $store_id, $food_id, $quantity, $remark, $day, $time);
         mysqli_stmt_execute($stmt);
-        echo "";
+        echo "<script>alert('訂單已送出！'); window.location.href='cart.php';</script>";
     } else {
         die("發生了一些錯誤！請洽管理員。");
     }
@@ -37,7 +37,7 @@ while ($rowCart = mysqli_fetch_assoc($RecCart)) {
     //新增完把購物車內的資料刪掉
     $sql_delete = "DELETE FROM `cart` WHERE `food_id` = '$food_id' AND `member_id` = '$member_id'";
     if (mysqli_query($conn, $sql_delete)) {
-        echo "<script>alert('餐點已刪除'); window.location.href='cart.php';</script>";
+        echo "";
     } else {
         echo "<script>alert('刪除餐點失敗'); window.location.href='cart.php';</script>";
     }
