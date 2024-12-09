@@ -7,7 +7,7 @@ $row_Recmember = mysqli_fetch_assoc($RecMember);
 
 $sql_cart = "SELECT * FROM `cart` WHERE `member_id`='" . $row_Recmember["id"] . "'";
 $RecCart = mysqli_query($conn, $sql_cart);
-if(mysqli_num_rows($Recorder) == 0){
+if(mysqli_num_rows($RecCart) == 0){
     echo "<script>alert('購物車內沒有商品可提交訂單'); window.location.href='cart.php';</script>";
 }
 
