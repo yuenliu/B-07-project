@@ -123,7 +123,7 @@
                 $counter++;
             }
             echo "</div>";
-            $sql_query = "SELECT `food_id`,`food_image`,`food_name`,`food_price` FROM `food` WHERE `store_id` = $store_id ";
+            $sql_query = "SELECT * FROM `food` WHERE `store_id` = $store_id ";
             $result = mysqli_query($conn, $sql_query);
             echo "<div class='rowmodal'>";
             while ($rowfood = mysqli_fetch_assoc($result)) {
