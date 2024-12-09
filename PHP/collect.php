@@ -24,7 +24,6 @@ require_once("login_check.php");
     <!-- 內容 -->
     <div class="container">
         <h2>我的收藏餐廳</h2>
-
         <?php
         session_start();
         $sql_query = "SELECT `id`,`storeName`,`online_state`,`store_image` FROM `store`";
@@ -33,62 +32,41 @@ require_once("login_check.php");
         $counter = 0;
 
         $query_RecMember = "SELECT * FROM `member` WHERE `account`='" . $_SESSION["account"] . "'";
-        $RecMember = mysqli_query($conn,$query_RecMember);
+        $RecMember = mysqli_query($conn, $query_RecMember);
         $row_Recmember = mysqli_fetch_assoc($RecMember);
         $member_id = $row_Recmember["id"];
 
-        $sql_query_favorites = "SELECT `store_id` FROM `favorites` WHERE `member_id` = $member_id";
-        $favorites_result = mysqli_query($conn, $sql_query_favorites);
-
-        if (mysqli_num_rows($favorites_result) > 0) {
-            $store_id = [];
-            // 儲存所有收藏的 store_id
-            while ($row = mysqli_fetch_assoc($favorites_result)) {
-                $store_id[] = $row['store_id'];
-            }
-
-            if (!empty($store_id)){
-
-                if (mysqli_num_rows($result) > 0) {
-                    echo "<div class='row'>";
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        if ($counter > 0 && $counter % 3 == 0) {
-                            echo "</div><div class='row'>";
-                        }
-                        $store_id = $row['id'];
-                        $check_favorite = "SELECT * FROM `favorites` WHERE `member_id` = $member_id AND `store_id` = $store_id";
-                        $favorite_result = mysqli_query($conn, $check_favorite);
-                        $is_favorite = mysqli_num_rows($favorite_result) > 0 ? true : false;
-
-                        // Display the store information
-                        echo "<a href='menu.php?storeid=" . $row["id"] . "'>";
-                        echo "<div class='col panel panel-default col-md-4'>";
-                        echo "<div class='panel-heading'><img src='storeimg/" . $row["store_image"] . "' style='width:320px; height:200px;' /></div></a>";
-                        echo "<table class='table'>";
-                        echo "<th>餐廳名稱 : " . $row["storeName"] . "</th>";
-                        echo "<th>";
-                        if (!$row["online_state"]) {
-                            echo "非營業中";
-                        } else {
-                            echo "營業中";
-                        }
-                        echo "</th>";
-                        echo "<th>";
-                        if ($is_favorite) {
-                            echo "<th><a href='remove_favorite.php?storeid=" . $store_id . "' class='btn btn-danger'>取消收藏</a></th>";
-                        }    
-                        echo "</th>";          
-                        echo "</table></div>";
-                        $counter++;
-                    }
-                    echo "</div>";
-                } else {
-                    echo "<p>您還沒有收藏任何店家。</p>";
+        $sql_query_favorites = "SELECT s.id, s.storeName, s.online_state, s.store_image FROM `store` s JOIN `favorites` f ON s.id = f.store_id WHERE f.member_id = $member_id";
+        $result = mysqli_query($conn, $sql_query_favorites);
+        if (mysqli_num_rows($result) > 0) {
+            $counter = 0;
+            echo "<div class='row'>";
+            while ($row = mysqli_fetch_assoc($result)) {
+                if ($counter > 0 && $counter % 3 == 0) {
+                    echo "</div><div class='row'>";
                 }
+                $store_id = $row['id']; // Display the store information 
+                echo "<a href='menu.php?storeid=" . $row["id"] . "'>";
+                echo "<div class='col panel panel-default col-md-4'>";
+                echo "<div class='panel-heading'><img src='storeimg/" . $row["store_image"] . "' style='width:320px; height:200px;' /></div></a>";
+                echo "<table class='table'>";
+                echo "<th>餐廳名稱 : " . $row["storeName"] . "</th>";
+                echo "<th>";
+                if (!$row["online_state"]) {
+                    echo "非營業中";
+                } else {
+                    echo "營業中";
+                }
+                echo "</th>";
+                echo "<th><a href='remove_favorite.php?storeid=" . $store_id . "' class='btn btn-danger'>取消收藏</a></th>";
+                echo "</table></div>";
+                $counter++;
+            }
+            echo "</div>";
+        } else {
+            echo "<p>您還沒有收藏任何店家。</p>";
         }
-    }else{
-        echo "<p>您還沒有收藏任何店家。</p>";
-    }
+        ;
         ?>
 
     </div>
