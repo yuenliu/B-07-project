@@ -138,6 +138,7 @@
                         <form action='menu.php?storeid=" . $store_id . "' method='post'><div class='modal-body'>";
                 echo "<input type='hidden' name='foodid' value=" . $rowfood["food_id"] . ">";
                 echo "<p>餐點名稱：" . $rowfood["food_name"] . "</p>";
+                echo "<p>餐點介紹：" . $rowfood["food_detail"] . "</p>";
                 echo "<label>數量</label><input type='number' name='quantity' value='1' min='1' max='50'><br>";
                 echo "<label>備註</label><input type='text' name='remark'>";
                 echo "<p class='right'>單價：" . $rowfood["food_price"] . "$</p>";
