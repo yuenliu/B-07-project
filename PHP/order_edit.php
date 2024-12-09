@@ -25,38 +25,119 @@
         $RecMember = mysqli_query($conn, $query_RecMember);
         $row_Recmember = mysqli_fetch_assoc($RecMember);
         $member_id = $row_Recmember["id"];
-        $query_order = "SELECT * FROM `food_order` WHERE `member_id` = '$member_id' AND `order_id` = '$order_id'";
-        $Recorder = mysqli_query($conn, $query_order);
-        $row_order = mysqli_fetch_assoc($Recorder);
-        if (mysqli_num_rows($Recorder) == 0) {
-            echo "<script>alert('沒有相關訂單可編輯'); window.location.href='order.php';</script>";
-        }
 
-        if (isset($_POST["order_edit"])) {
-            $new_qty = $_POST["new_qty"];
-            $new_remark = $_POST["new_remark"];
+        if ($row_Recmember["identity"] == "consumer") {
+            $query_order = "SELECT * FROM `food_order` WHERE `member_id` = '$member_id' AND `order_id` = '$order_id'";
+            $Recorder = mysqli_query($conn, $query_order);
+            $row_order = mysqli_fetch_assoc($Recorder);
 
-            $sql_update = "UPDATE `food_order` SET `quantity` = ?, `remark`= ? WHERE `order_id` = '$order_id' AND `member_id` = '$member_id' ";
-            $stmt = mysqli_stmt_init($conn);
-            $prepareStmt = mysqli_stmt_prepare($stmt, $sql_update);
-            if ($prepareStmt) {
-                mysqli_stmt_bind_param($stmt, "ss", $new_qty, $new_remark);
-                mysqli_stmt_execute($stmt);
-                if (mysqli_stmt_affected_rows($stmt) > 0) {
-                    echo "<script>alert('更改成功'); window.location.href='order.php';</script>";
+            if (mysqli_num_rows($Recorder) == 0) {
+                echo "<script>alert('沒有相關訂單可編輯'); window.location.href='order.php';</script>";
+            }
+            switch ($row_order["order_state"]) {
+                case 0:
+                    break;
+                case 2:
+                    $order_state = 3;
+                    $sql_update = "UPDATE `food_order` SET `order_state` = ? WHERE `order_id` = '$order_id' AND `member_id` = '$member_id' ";
+                    $stmt = mysqli_stmt_init($conn);
+                    $prepareStmt = mysqli_stmt_prepare($stmt, $sql_update);
+                    if ($prepareStmt) {
+                        mysqli_stmt_bind_param($stmt, "s", $order_state);
+                        mysqli_stmt_execute($stmt);
+                        echo "<script>alert('已接收訂單'); window.location.href='order.php';</script>";
+                    } else {
+                        die("發生了一些錯誤！請洽管理員。");
+                    }
+                    break;
+                case 1:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                    echo "<script>alert('此訂單目前不可編輯'); window.location.href='order.php';</script>";
+                    break;
+                default:
+                    echo "<script>alert('錯誤！'); window.location.href='order.php';</script>";
+            }
+
+            $query_food = "SELECT * FROM `food` WHERE `food_id` = '" . $row_order["food_id"] . "'";
+            $food = mysqli_query($conn, $query_food);
+            $Rec_food = mysqli_fetch_assoc($food);
+
+            $query_store = "SELECT * FROM `store` WHERE `id` = '" . $Rec_food["store_id"] . "'";
+            $store = mysqli_query($conn, $query_store);
+            $Rec_store = mysqli_fetch_assoc($store);
+            if (isset($_POST["order_edit"])) {
+                $new_qty = $_POST["new_qty"];
+                $new_remark = $_POST["new_remark"];
+
+                $sql_update = "UPDATE `food_order` SET `quantity` = ?, `remark`= ? WHERE `order_id` = '$order_id' AND `member_id` = '$member_id' ";
+                $stmt = mysqli_stmt_init($conn);
+                $prepareStmt = mysqli_stmt_prepare($stmt, $sql_update);
+                if ($prepareStmt) {
+                    mysqli_stmt_bind_param($stmt, "ss", $new_qty, $new_remark);
+                    mysqli_stmt_execute($stmt);
+                    if (mysqli_stmt_affected_rows($stmt) > 0) {
+                        echo "<script>alert('更改成功'); window.location.href='order.php';</script>";
+                    } else {
+                        echo "<script>alert('更改失敗，可能沒有修改任何內容'); window.location.href='order.php';</script>";
+                    }
                 } else {
-                    echo "<script>alert('更改失敗，可能沒有修改任何內容'); window.location.href='order.php';</script>";
+                    die("發生了一些錯誤！請洽管理員。");
                 }
-            } else {
-                die("發生了一些錯誤！請洽管理員。");
             }
         }
-        $query_food = "SELECT * FROM `food` WHERE `food_id` = '" . $row_order["food_id"] . "'";
-        $food = mysqli_query($conn, $query_food);
-        $Rec_food = mysqli_fetch_assoc($food);
-        $query_store = "SELECT * FROM `store` WHERE `id` = '" . $Rec_food["store_id"] . "'";
-        $store = mysqli_query($conn, $query_store);
-        $Rec_store = mysqli_fetch_assoc($store);
+        if ($row_Recmember["identity"] == "store") {
+            $query_store = "SELECT * FROM `store` WHERE `member_id` = '$member_id'";
+            $store = mysqli_query($conn, $query_store);
+            $Rec_store = mysqli_fetch_assoc($store);
+            $store_id = $Rec_store["id"];
+            $query_order = "SELECT * FROM `food_order` WHERE `store_id` = '$store_id' AND `order_id` = '$order_id'";
+            $Recorder = mysqli_query($conn, $query_order);
+            $row_order = mysqli_fetch_assoc($Recorder);
+            if (mysqli_num_rows($Recorder) == 0) {
+                echo "<script>alert('沒有相關訂單可取消'); window.location.href='order.php';</script>";
+            } else {
+                $sql_update = "UPDATE `food_order` SET `order_state` = ? WHERE `order_id` = '$order_id' AND `store_id` = '$store_id' ";
+                $stmt = mysqli_stmt_init($conn);
+                $prepareStmt = mysqli_stmt_prepare($stmt, $sql_update);
+                switch ($row_order["order_state"]) {
+                    case 0:
+                        $order_state = 1;
+                        if ($prepareStmt) {
+                            mysqli_stmt_bind_param($stmt, "s", $order_state);
+                            mysqli_stmt_execute($stmt);
+                            echo "<script>alert('已接收訂單'); window.location.href='order.php';</script>";
+                        } else {
+                            die("發生了一些錯誤！請洽管理員。");
+                        }
+                        break;
+                    case 1:
+                        $order_state = 2;
+                        if ($prepareStmt) {
+                            mysqli_stmt_bind_param($stmt, "s", $order_state);
+                            mysqli_stmt_execute($stmt);
+                            echo "<script>alert('已通知顧客取餐'); window.location.href='order.php';</script>";
+                        } else {
+                            die("發生了一些錯誤！請洽管理員。");
+                        }
+                        break;
+                    case 2:
+                        $order_state = 4;
+                        if ($prepareStmt) {
+                            mysqli_stmt_bind_param($stmt, "s", $order_state);
+                            mysqli_stmt_execute($stmt);
+                            echo "<script>alert('已回報顧客放鳥'); window.location.href='order.php';</script>";
+                        } else {
+                            die("發生了一些錯誤！請洽管理員。");
+                        }
+                        break;
+                    default:
+                        echo "<script>alert('錯誤'); window.location.href='order.php';</script>";
+                }
+            }
+        }
     } else {
         header("Location: order.php");
     }
