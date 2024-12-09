@@ -32,7 +32,7 @@ while ($rowCart = mysqli_fetch_assoc($RecCart)) {
     if ($prepareStmt) {
         mysqli_stmt_bind_param($stmt, "sssssss", $member_id, $store_id, $food_id, $quantity, $remark, $day, $time);
         mysqli_stmt_execute($stmt);
-        echo "<script>alert('訂單已送出！'); window.location.href='cart.php';</script>";
+        echo "<script>alert('訂單已送出！'); window.location.href='order.php';</script>";
     } else {
         die("發生了一些錯誤！請洽管理員。");
     }
