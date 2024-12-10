@@ -56,7 +56,10 @@ require_once("login_check.php");
                 $foodname = $_POST['foodname'];
                 $foodprice = $_POST['foodprice'];
                 $fooddetail = $_POST['fooddetail'];
-                $foodcalorie = $_POST['foodcalorie'];
+                $foodprotein = $_POST['foodprotein'];
+                $foodfat = $_POST['foodfat'];
+                $foodcarbs = $_POST['foodcarbs'];
+                $foodcalorie = $foodprotein * 4 + $foodfat * 9 + $foodcarbs * 4;
 
                 session_start();
                 $query_RecMember = "SELECT * FROM `member` WHERE `account`='" . $_SESSION["account"] . "'";
@@ -69,13 +72,13 @@ require_once("login_check.php");
                     // 設定食物圖片檔名
                     $foodimage = $file_name;
                     // 使用準備語句防止 SQL 注入
-                    $sql = "INSERT INTO `food` (`store_id`, `food_name`, `food_image`, `food_price`, `food_detail`, `food_calorie`) 
-            VALUES (?, ?, ?, ?, ?, ?)";
+                    $sql = "INSERT INTO `food` (`store_id`, `food_name`, `food_image`, `food_price`, `food_detail`, `food_protein`, `food_fat`, `food_carbs`, `food_calorie`)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
                     // 準備語句
                     if ($stmt = mysqli_prepare($conn, $sql)) {
                         // 綁定參數
-                        mysqli_stmt_bind_param($stmt, "isssss", $row_Recstore["id"], $foodname, $foodimage, $foodprice, $fooddetail, $foodcalorie);
+                        mysqli_stmt_bind_param($stmt, "sssssssss", $row_Recstore["id"], $foodname, $foodimage, $foodprice, $fooddetail, $foodprotein, $foodfat, $foodcarbs, $foodcalorie);
 
                         // 執行查詢
                         if (mysqli_stmt_execute($stmt)) {
@@ -109,8 +112,12 @@ require_once("login_check.php");
                         <input type="text" name="foodprice" id="foodprice" required><br>
                         <font size="5">餐點介紹:</font>
                         <textarea name="fooddetail"></textarea><br>
-                        <font size="5">餐點卡路里:</font>
-                        <input type="text" name="foodcalorie" id="foodcalorie" required><br>
+                        <font size="5">餐點蛋白質(公克/g):</font>
+                        <input type="text" name="foodprotein" id="foodprotein" required><br>
+                        <font size="5">餐點油脂(公克/g):</font>
+                        <input type="text" name="foodfat" id="foodfat" required><br>
+                        <font size="5">餐點碳水化合物(公克/g):</font>
+                        <input type="text" name="foodcarbs" id="foodcarbs" required><br>
                         <br>
                         <input type="submit" value="上傳" name="submit">
 
