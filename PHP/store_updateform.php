@@ -37,6 +37,7 @@ include("navbar.php");
                 $target_file = $target_dir . basename($file_name);
                 $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
+                $errors = array();
                 if ($check === false) {
                     array_push($errors, "檔案不是有效的圖片。");
                 }
@@ -59,7 +60,7 @@ include("navbar.php");
 
                     //先處理基本資料，圖片先管他去死
                     if (mysqli_num_rows($result_RecStore) == 0) {
-                        $sql = "INSERT INTO `store` (`member_id`,`storeName`, `storeAddress`, `storePhoneNumber`) VALUES (?,?, ?, ?)";
+                        $sql = "INSERT INTO `store` (`member_id`,`storeName`, `storeAddress`, `storePhoneNumber`,`store_image`) VALUES (?,?, ?, ?,?)";
                         $stmt = mysqli_stmt_init($conn);
                         $prepareStmt = mysqli_stmt_prepare($stmt, $sql);
                         $id = $row_Recmember["id"];
