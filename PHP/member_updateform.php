@@ -78,12 +78,12 @@
                 </p>
 
                 <p><strong>Email</strong>:
-                    <input name="email" type="text" value="<?php echo $row_Recmember["E-mail"];?>">
+                    <input name="email" type="email" value="<?php echo $row_Recmember["E-mail"];?>">
                     <font color="#FF0000">*必填</font>
                 </p>
 
                 <p><strong>手機號碼</strong>:
-                    <input name="phoneNumber" type="text" value="<?php echo $row_Recmember["phoneNumber"];?>">
+                    <input name="phoneNumber" type="tel" value="<?php echo $row_Recmember["phoneNumber"];?>">
                     <font color="#FF0000">*必填</font>
                 </p>
                 </div>
