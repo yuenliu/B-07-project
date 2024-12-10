@@ -46,7 +46,6 @@ require_once("login_check.php");
     <h2>餐點列表</h2>
     <style>
         table {
-            width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
             font-size: 25px;
@@ -79,7 +78,7 @@ require_once("login_check.php");
     $storeresult = mysqli_query($conn, $store_query);
     $row_Recstore = mysqli_fetch_assoc($storeresult);
     $select_db = @mysqli_select_db($conn, "food");
-    $sql_query = "SELECT `food_id`,`food_image`,`food_name`,`food_detail`,`food_price`,`food_calorie` FROM `food` WHERE `store_id`='" . $row_Recstore["id"] . "'";
+    $sql_query = "SELECT `store_id`, `food_image`, `food_name`, `food_detail`, `food_price`, `food_protein`, `food_fat`, `food_carbs`, `food_calorie` FROM `food` WHERE `store_id`='" . $row_Recstore["id"] . "'";
     $result = mysqli_query($conn, $sql_query);
     echo "<table>";
     echo "<th>餐點編號</th>";
@@ -87,6 +86,9 @@ require_once("login_check.php");
     echo "<th>餐點名稱</th>";
     echo "<th>餐點介紹</th>";
     echo "<th>餐點價錢</th>";
+    echo "<th>餐點蛋白質(g)</th>";
+    echo "<th>餐點脂肪(g)</th>";
+    echo "<th>餐點碳水化合物(g)</th>";
     echo "<th>餐點卡路里</th>";
     echo "<th>編輯/修改</th>";
     echo "<th>刪除</th>";
