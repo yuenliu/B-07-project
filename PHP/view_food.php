@@ -6,6 +6,7 @@ require_once("login_check.php");
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,6 +19,7 @@ require_once("login_check.php");
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/account_manage.css">
 </head>
+
 <body>
     <div>
         <div class="container">
@@ -37,9 +39,12 @@ require_once("login_check.php");
                         $sql_meal = "SELECT * FROM `meals` WHERE `member_id`='" . $row_Recmember["id"] . "'";
                         $RecMeal = mysqli_query($conn, $sql_meal);
 
+                        $sql_order = "SELECT * FROM `food_order` WHERE `order_state` = 3 AND `member_id`='" . $row_Recmember["id"] . "'";
+                        $Recorder = mysqli_query($conn, $sql_order);
+
                         // Check if there are no meal records
-                        if (mysqli_num_rows($RecMeal) == 0) {
-                            echo "<h3>尚未有飲食紀錄！</h3>";
+                        if (mysqli_num_rows($RecMeal) == 0 && mysqli_num_rows($Recorder) == 0) {
+                            echo "<h3>尚未有飲食或訂單紀錄！</h3>";
                         } else {
                             // Start the table and display the column headers
                             echo "<table class='table table-bordered'>
@@ -61,12 +66,15 @@ require_once("login_check.php");
 
                             // Variable to store total calories
                             $total_calorie = 0;
-                    
-                            // Loop through each meal record and display the data
-                            while ($rowMeal = mysqli_fetch_assoc($RecMeal)) {
-                                $calorie = 0;
-                                $calorie = ($rowMeal["protein"] * 4) + ($rowMeal["fat"] * 9) + ($rowMeal["carbs"] * 4);
-                                echo "<tr align='center'>
+                            if (mysqli_num_rows($RecMeal) == 0) {
+                                echo "<tr><td colspan='6'><h3>尚未有飲食紀錄！</h3></td></tr>";
+                            } else {
+
+                                // Loop through each meal record and display the data
+                                while ($rowMeal = mysqli_fetch_assoc($RecMeal)) {
+                                    $calorie = 0;
+                                    $calorie = ($rowMeal["protein"] * 4) + ($rowMeal["fat"] * 9) + ($rowMeal["carbs"] * 4);
+                                    echo "<tr align='center'>
                                         <td>" . $rowMeal["meal_name"] . "</td>
                                         <td>" . $rowMeal["protein"] . "</td>
                                         <td>" . $rowMeal["fat"] . "</td>
@@ -74,9 +82,49 @@ require_once("login_check.php");
                                         <td>" . $calorie . "</td>
                                         <td>" . $rowMeal["meal_date"] . "</td>
                                     </tr>";
-                                    
-                                // Calculate total calories for the meal
-                                $total_calorie += ($rowMeal["protein"] * 4) + ($rowMeal["fat"] * 9) + ($rowMeal["carbs"] * 4);
+
+                                    // Calculate total calories for the meal
+                                    $total_calorie += ($rowMeal["protein"] * 4) + ($rowMeal["fat"] * 9) + ($rowMeal["carbs"] * 4);
+                                }
+                            }
+                            echo "</table>";
+                            echo "<hr>
+                                <table class='table table-bordered'><h3> 訂單</h3>
+                                    <tr align='center'>
+                                        <th>店家名稱</th>
+                                        <th>餐點名稱</th>
+                                        <th>蛋白質</th>
+                                        <th>脂肪</th>
+                                        <th>碳水化合物</th>
+                                        <th>熱量</th>
+                                        <th>日期</th>
+                                    </tr>";
+                            if (mysqli_num_rows($Recorder) == 0) {
+                                echo "<tr><td colspan='7'><h3>尚未有飲食紀錄！</h3></td></tr>";
+                            } else {
+
+                                while ($roworder = mysqli_fetch_assoc($Recorder)) {
+                                    $calorie = 0;
+                                    $store_query = "SELECT * FROM `store` WHERE `id`='" . $roworder["store_id"] . "'";
+                                    $storeresult = mysqli_query($conn, $store_query);
+                                    $row_Recstore = mysqli_fetch_assoc($storeresult);
+
+                                    $sql_query = "SELECT `food_name`, `food_protein`, `food_fat`, `food_carbs`, `food_calorie` FROM `food` WHERE `food_id`='" . $roworder["food_id"] . "'";
+                                    $result = mysqli_query($conn, $sql_query);
+                                    $row_food = mysqli_fetch_assoc($result);
+                                    echo "<tr align='center'>
+                                        <td>" . $row_Recstore["storeName"] . "</td>
+                                        <td>" . $row_food["food_name"] . "</td>
+                                        <td>" . $row_food["food_protein"] . "</td>
+                                        <td>" . $row_food["food_fat"] . "</td>
+                                        <td>" . $row_food["food_carbs"] . "</td>
+                                        <td>" . $row_food["food_calorie"] . "</td>
+                                        <td>" . $roworder["day"] . "</td>
+                                    </tr>";
+
+                                    // Calculate total calories for the meal
+                                    $total_calorie += $row_food["food_calorie"];
+                                }
                             }
                             // Close the table and display the total calorie count
                             echo "</table>";
@@ -92,4 +140,5 @@ require_once("login_check.php");
         </div>
     </div>
 </body>
+
 </html>
