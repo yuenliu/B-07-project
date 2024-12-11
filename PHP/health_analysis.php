@@ -50,7 +50,7 @@ require_once("login_check.php");
                                              AND `meal_date` BETWEEN '$start_date' AND '$end_date'";
                                 $RecMeal = mysqli_query($conn, $sql_meal);
 
-                                $sql_order = "SELECT * FROM `food_order` WHERE `member_id`='" . $row_Recmember["id"] . "' 
+                                $sql_order = "SELECT * FROM `food_order` WHERE `order_state` = 3 AND `member_id`='" . $row_Recmember["id"] . "' 
                                              AND `day` BETWEEN '$start_date' AND '$end_date'";
                                 $Recorder = mysqli_query($conn, $sql_order);
 
