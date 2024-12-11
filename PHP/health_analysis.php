@@ -6,6 +6,7 @@ require_once("login_check.php");
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,7 +20,7 @@ require_once("login_check.php");
 </head>
 
 <body>
-<div>
+    <div>
         <div class="container">
             <div class="col-sm-8 col-sm-offset-2">
                 <div class="panel panel-default">
@@ -34,11 +35,11 @@ require_once("login_check.php");
                             <input type="date" id="end_date" name="end_date" required>
                             <button type="submit" name="submit">查詢</button>
                         </form>
-                    <?php
+                        <?php
                         if (isset($_POST['submit'])) {
-                    // 取得用戶選擇的日期範圍
-                        $start_date = $_POST['start_date'];
-                        $end_date = $_POST['end_date'];
+                            // 取得用戶選擇的日期範圍
+                            $start_date = $_POST['start_date'];
+                            $end_date = $_POST['end_date'];
 
                             if ($start_date && $end_date) {
                                 $query_RecMember = "SELECT * FROM `member` WHERE `account`='" . $_SESSION["account"] . "'";
@@ -49,7 +50,11 @@ require_once("login_check.php");
                                              AND `meal_date` BETWEEN '$start_date' AND '$end_date'";
                                 $RecMeal = mysqli_query($conn, $sql_meal);
 
-                                if (mysqli_num_rows($RecMeal) == 0) {
+                                $sql_order = "SELECT * FROM `food_order` WHERE `member_id`='" . $row_Recmember["id"] . "' 
+                                             AND `day` BETWEEN '$start_date' AND '$end_date'";
+                                $Recorder = mysqli_query($conn, $sql_order);
+
+                                if (mysqli_num_rows($RecMeal) == 0 && mysqli_num_rows($Recorder) == 0) {
                                     echo "<h3>在所選日期範圍內，尚未有飲食紀錄！</h3>";
                                 } else {
                                     // 初始化總攝取量變數
@@ -60,14 +65,13 @@ require_once("login_check.php");
                                     echo "<table class='table table-bordered'>";
                                     echo "<thead><tr><th>餐點名稱</th><th>蛋白質 (克)</th><th>碳水化合物 (克)</th><th>脂肪 (克)</th><th>熱量</th><th>日期</th></tr></thead>";
                                     echo "<tbody>";
-
                                     // 迴圈顯示符合條件的飲食紀錄
                                     while ($rowMeal = mysqli_fetch_assoc($RecMeal)) {
                                         $calorie = 0;
                                         $calorie = ($rowMeal["protein"] * 4) + ($rowMeal["fat"] * 9) + ($rowMeal["carbs"] * 4);
                                         echo "<tr>";
                                         echo "<td>" . $rowMeal["meal_name"] . "</td>";
-                                        echo "<td>" . $rowMeal["protein"] . "</td>"; 
+                                        echo "<td>" . $rowMeal["protein"] . "</td>";
                                         echo "<td>" . $rowMeal["fat"] . "</td>";
                                         echo "<td>" . $rowMeal["carbs"] . "</td>";
                                         echo "<td>" . $calorie . "</td>";
@@ -79,7 +83,27 @@ require_once("login_check.php");
                                         $total_carbs += $rowMeal["carbs"];
                                         $total_fat += $rowMeal["fat"];
                                     }
+                                    // 迴圈顯示符合條件的飲食紀錄
+                                    while ($roworder = mysqli_fetch_assoc($Recorder)) {
+                                        $calorie = 0;
+                                        $calorie = ($rowMeal["protein"] * 4) + ($rowMeal["fat"] * 9) + ($rowMeal["carbs"] * 4);
+                                        $sql_query = "SELECT `food_name`, `food_protein`, `food_fat`, `food_carbs`, `food_calorie` FROM `food` WHERE `food_id`='" . $roworder["food_id"] . "'";
+                                        $result = mysqli_query($conn, $sql_query);
+                                        $row_food = mysqli_fetch_assoc($result);
+                                        echo "<tr>";
+                                        echo "<td>" . $row_food["food_name"] . "</td>";
+                                        echo "<td>" . $row_food["food_protein"] . "</td>";
+                                        echo "<td>" . $row_food["food_fat"] . "</td>";
+                                        echo "<td>" . $row_food["food_carbs"] . "</td>";
+                                        echo "<td>" . $row_food["food_calorie"] . "</td>";
+                                        echo "<td>" . $roworder["day"] . "</td>";
+                                        echo "</tr>";
 
+                                        // 累加總攝取量
+                                        $total_protein += $row_food["food_protein"];
+                                        $total_carbs += $row_food["food_carbs"];
+                                        $total_fat += $row_food["food_fat"];
+                                    }
                                     echo "</tbody></table>";
 
                                     // 顯示總攝取量
@@ -102,11 +126,12 @@ require_once("login_check.php");
                             3. 「碳水化合物」 建議攝取量 : 佔總熱量的 45% 到 65% 。
                             </h3>";
                         }
-                    ?>
+                        ?>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </body>
+
 </html>
