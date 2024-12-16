@@ -43,9 +43,8 @@ CREATE TABLE `store` (
 --
 
 INSERT INTO `store` (`id`, `member_id`, `storeName`, `storeAddress`, `storePhoneNumber`, `online_state`, `store_image`) VALUES
-(3, 5, '測試4', '測試5', '測試6', 0, '48366740_316097748999144_9203441082203897856_n.jpg'),
-(5, 4, '測試1', '測試5', '0900000000', 0, '5.png'),
-(10, 6, 'test1', '台北市士林區華岡路55號', '0900000000', 0, '343960140_634492038012960_7823659544769905260_n.png');
+(12, 1, '麥當勞', '台北市士林區格致路62號', '0228617252', 1, '麥當勞.png'),
+(13, 3, '感恩麵店', '111台灣台北市士林區光華路26巷2弄4號', '02 2861 7994', 1, '感恩.jpg');
 
 --
 -- 已傾印資料表的索引
@@ -66,7 +65,7 @@ ALTER TABLE `store`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `store`
 --
 ALTER TABLE `store`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
